@@ -10,6 +10,7 @@ import {
 import {
     BsFillBarChartFill as Chart,
     BsFillPeopleFill as People,
+    BsEnvelopeHeartFill as Suaje,
 } from 'react-icons/bs'
 
 import {
@@ -18,7 +19,16 @@ import {
 
 import {
     FaDoorOpen as Exit,
+    FaFileInvoiceDollar as Cotizar
 } from 'react-icons/fa'
+import {
+    RiFilePaper2Line as Paper
+} from 'react-icons/ri'
+
+import {
+    LiaEnvira as Leave,
+} from 'react-icons/lia'
+
 
 export const MyIcons = {
     FingerPrint,
@@ -28,4 +38,8 @@ export const MyIcons = {
     Info,
     Profile,
     Exit,
+    Paper,
+    Cotizar,
+    Leave,
+    Suaje
 }

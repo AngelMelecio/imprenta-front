@@ -48,7 +48,7 @@ const LoginPage = () => {
             disabled={loading}
             type='submit'
             value={loading ? "Ingresando..." : "Ingresar"}
-            className={`w-full h-10 py-2 mt-2 btn-naranja`} />
+            className={`w-full h-10 py-2 mt-2 btn-emerald`} />
         </form>
       </div>
     </div>

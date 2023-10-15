@@ -1,16 +1,20 @@
 import AccessoPage from "../pages/AccessoPage";
 import PerfilPage from "../pages/PerfilPage";
 import { MyIcons } from "./Icons";
+import CotizarPage from '../pages/Cotizar/CotizarPage'
+import MaterialesPage from '../pages/Materiales/MaterialesPage'
+import SuajesPage from '../pages/Suajes/SuajesPage'
 
 export const adminRoutes = [
-    {path:'/perfil', element: <PerfilPage/>},
-    {path:'/acceso', element: <AccessoPage/>},
+    {path:'/cotizar', element: <CotizarPage/>},
+    {path:'/materiales', element: <MaterialesPage/>},
+    {path:'/suajes', element: <SuajesPage/>},
 ]
 
 export const adminTabs = [
-    {to:'/acceso', content:'Acceso', icon: <MyIcons.FingerPrint size={"23px"}/> },
-    {to:'/clientes', content:'Clientes', icon: <MyIcons.People size={"20px"}/>},
-    {to:'/paquetes', content:'Paquetes', icon: <MyIcons.Pack size={"24px"}/> },
+    {to:'/cotizar', content:'Cotizar', icon: <MyIcons.Cotizar size={"20px"}/> },
+    {to:'/materiales', content:'Materiales', icon: <MyIcons.Leave size={"27px"}/>},
+    {to:'/suajes', content:'Suajes', icon: <MyIcons.Suaje size={"20px"}/> },
 ]
 
 export const baseTabs = [
