@@ -1,16 +1,27 @@
 import {
+    AiFillCamera as Camera,
+    AiOutlinePlus as Plus,
+    AiOutlineMinus as Minus,
+    AiFillEdit as Edit,
+    AiOutlineShoppingCart as Cart,
+} from 'react-icons/ai'
+
+import {
     HiFingerPrint as FingerPrint,
 } from 'react-icons/hi'
 
 import {
     BiSolidPackage as Pack,
     BiSolidInfoCircle as Info,
+    BiChevronDown as Down,
+    BiChevronUp as Up,
+    BiChevronLeft as Left,
+    BiChevronRight as Right,
 } from 'react-icons/bi'
 
 import {
     BsFillBarChartFill as Chart,
     BsFillPeopleFill as People,
-    BsEnvelopeHeartFill as Suaje,
 } from 'react-icons/bs'
 
 import {
@@ -26,13 +37,22 @@ import {
 } from 'react-icons/ri'
 
 import {
+    ImInsertTemplate as Suaje,
+} from 'react-icons/im'
+
+import {
     LiaEnvira as Leave,
 } from 'react-icons/lia'
 
+import {
+    IoMdPerson as Person,
+    IoIosWarning as Warning,
+    IoMdClose as Close,
+} from 'react-icons/io'
 
 export const MyIcons = {
-    FingerPrint,
-    Pack,
+    FingerPrint, Up, Down, Left, Right,
+    Pack, Plus, Minus, Edit, Cart,
     Chart,
     People,
     Info,
@@ -41,5 +61,6 @@ export const MyIcons = {
     Paper,
     Cotizar,
     Leave,
-    Suaje
+    Suaje, Camera,
+    Person,
 }
