@@ -5,6 +5,7 @@ import {
 import {
     BiSolidPackage as Pack,
     BiSolidInfoCircle as Info,
+    BiSolidTrash as Trash,
 } from 'react-icons/bi'
 
 import {
@@ -37,6 +38,10 @@ import {
     AiFillCaretUp as Up,
 } from 'react-icons/ai'
 
+import {
+    IoIosWarning as Alert,
+} from 'react-icons/io'
+
 export const MyIcons = {
     FingerPrint,
     Pack,
@@ -55,4 +60,6 @@ export const MyIcons = {
     Filter,
     Down,
     Up,
+    Trash,
+    Alert,
 }
