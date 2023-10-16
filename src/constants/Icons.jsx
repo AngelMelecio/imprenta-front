@@ -11,6 +11,7 @@ import {
     BsFillBarChartFill as Chart,
     BsFillPeopleFill as People,
     BsEnvelopeHeartFill as Suaje,
+    BsFilter as Filter,
 } from 'react-icons/bs'
 
 import {
@@ -28,7 +29,13 @@ import {
 import {
     LiaEnvira as Leave,
 } from 'react-icons/lia'
-
+import {
+    AiOutlinePlus as Plus,
+    AiOutlineSearch as Lupa,
+    AiOutlineClose as Cancel,
+    AiFillCaretDown as Down,
+    AiFillCaretUp as Up,
+} from 'react-icons/ai'
 
 export const MyIcons = {
     FingerPrint,
@@ -41,5 +48,11 @@ export const MyIcons = {
     Paper,
     Cotizar,
     Leave,
-    Suaje
+    Suaje,
+    Plus,
+    Lupa,
+    Cancel,
+    Filter,
+    Down,
+    Up,
 }
