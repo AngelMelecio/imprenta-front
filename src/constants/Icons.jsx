@@ -17,11 +17,13 @@ import {
     BiChevronUp as Up,
     BiChevronLeft as Left,
     BiChevronRight as Right,
+    BiSolidTrash as Trash,
 } from 'react-icons/bi'
 
 import {
     BsFillBarChartFill as Chart,
     BsFillPeopleFill as People,
+    BsFilter as Filter,
 } from 'react-icons/bs'
 
 import {
@@ -43,11 +45,20 @@ import {
 import {
     LiaEnvira as Leave,
 } from 'react-icons/lia'
+import {
+    AiOutlinePlus as Plus,
+    AiOutlineSearch as Lupa,
+    AiOutlineClose as Cancel,
+    AiFillCaretDown as Down,
+    AiFillCaretUp as Up,
+} from 'react-icons/ai'
 
 import {
+
     IoMdPerson as Person,
     IoIosWarning as Warning,
     IoMdClose as Close,
+    IoIosWarning as Alert,
 } from 'react-icons/io'
 
 export const MyIcons = {
@@ -63,4 +74,9 @@ export const MyIcons = {
     Leave,
     Suaje, Camera,
     Person,
+    Lupa,
+    Cancel,
+    Filter,
+    Trash,
+    Alert,
 }
