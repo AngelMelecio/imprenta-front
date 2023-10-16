@@ -27,7 +27,7 @@ const AppBar = () => {
   }
 
   return (
-    <div className='relative w-16 h-screen text-white'>
+    <div className='relative z-10 w-16 h-screen text-white'>
       <div id="side-bar" className='absolute flex flex-col w-16 h-full duration-200 ease-in-out bg-emerald-600 group hover:w-56 hover:delay-300'>
         {/* AppBar Header */}
         <div className="flex flex-[0.20] w-full total-center">
