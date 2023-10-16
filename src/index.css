@@ -209,6 +209,21 @@ label.up {
   align-items: center;
 }
 
+.btn-neutral {
+  cursor: pointer;
+  background-color: #ffffff;
+  color: rgb(75 85 99);
+  transition: 0.2s;
+}
+
+.btn-neutral:hover {
+  background-color: #f3f4f6;
+}
+
+.btn-neutral:active {
+  opacity: 0.8;
+  transition: 0s;
+
 .animate-slide>div {
   animation: slide 1.6s ease-in-out infinite;
 }
