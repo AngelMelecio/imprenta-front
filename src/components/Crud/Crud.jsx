@@ -44,10 +44,10 @@ const Crud = ({
   return (
     <div className="relative flex w-full h-screen bg-slate-100">
       <div id="page" className="relative flex flex-col w-full h-full p-4 ">
-        <h1 className="pb-4 text-3xl font-[800] text-emerald-800">{title}</h1>
+        <h1 className="pl-2 pb-2 text-3xl font-[800] text-emerald-800">{title}</h1>
         <div className="flex flex-col h-full bg-white rounded-lg shadow-lg ">
           {/* Table header */}
-          <div className="px-5 py-4 border-b-2 rounded-t-lg " >
+          <div className="px-4 py-4 border-b-2 rounded-t-lg border-b-slate-100 " >
             <div className="flex justify-between w-full">
               {/* Buttons */}
               <div className="flex flex-row items-center justify-between">
@@ -59,7 +59,7 @@ const Crud = ({
                 <button
                   disabled={data?.filter(d => d.isChecked).length === 0}
                   onClick={() => onDelete(data.filter(d => d.isChecked).map(d => d[idName]))}
-                  className='ml-3 text-white rounded-lg w-9 h-9 btn-trash total-center'>
+                  className='ml-4 text-white rounded-lg w-9 h-9 btn-trash total-center'>
                   <MyIcons.Trash size='20px' />
                 </button>
               </div>
