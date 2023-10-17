@@ -100,7 +100,7 @@ const Crud = ({
                   //  if (filter.ord === 2) return a[filter.atr] < b[filter.atr] ? 1 : -1
                   // })
                   sortedData.map((item, i) =>
-                    <tr key={`TR_${i}`}>
+                    <tr key={`TR_${i}`} >
                       <td>
                         <div className='total-center'>
                           <input
@@ -116,7 +116,7 @@ const Crud = ({
                             type="checkbox" />
                         </div>
                       </td>
-                      {columns?.map((col, j) => <td key={`TD_${i}_${j}`}>
+                      {columns?.map((col, j) => <td key={`TD_${i}_${j}`} onClick={() => navigate(`/${path}/${item[idName]}`)}>
                         {item[col.atribute]}
                       </td>)
                       }

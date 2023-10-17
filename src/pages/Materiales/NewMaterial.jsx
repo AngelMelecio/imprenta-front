@@ -5,14 +5,14 @@ import Opts from '../../components/Opts'
 import { useFormik } from 'formik'
 import ImgInpt from '../../components/ImgInpt'
 import AbsScroll from '../../components/AbsScroll'
-//import { useUsuarios } from './hooks/UsuariosContext'
+import { useMaterial } from './hooks/MaterialContext'
 import { MyIcons } from '../../constants/Icons'
 
 const NewMateriales = () => {
 
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
-  //const { createUser } = useUsuarios()
+  const { createMaterial } = useMaterial()
 
   const userFormik = useFormik({
     initialValues: {
@@ -54,8 +54,8 @@ const NewMateriales = () => {
       try {
         console.log(values)
         setLoading(true)
-        //await createUser(values)
-        //navigate('/materiales')
+        await createMaterial(values)
+        navigate('/materiales')
 
       } catch (e) {
 

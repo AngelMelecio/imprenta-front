@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { MyIcons } from '../constants/Icons'
 
 
-const Opts = ({ label, name, options, formik, ...props }) => {
+const Opts = ({ label, name, options, formik, selecting, ...props }) => {
 
     const [showOpts, setShowOpts] = useState(false)
     const [error, setError] = useState(null)
@@ -17,11 +17,10 @@ const Opts = ({ label, name, options, formik, ...props }) => {
 
 
     const handleOptClick = (e, option) => {
-        e.preventDefault()
         inptRef.current.blur()
         if (formik?.values[name] === option) return
         formik?.setFieldValue(name, option)
-        //props.onKeyDown()
+        selecting && selecting(true)    
     }
 
     const handleInptChange = (e) => {
@@ -31,7 +30,7 @@ const Opts = ({ label, name, options, formik, ...props }) => {
     return (
         <div >
             <div className="relative">
-                <label htmlFor={name} className={`absolute  ${showOpts ? 'text-blue-500' : 'text-gray-500'} bg-white px-1 pointer-events-none up ${error && touched ? 'text-rose-400' : ''} transition-all duration-200 `}>{label}</label>
+                <label htmlFor={name} className={`absolute  ${showOpts ? 'text-emerald-500' : 'text-gray-500'} bg-white px-1 pointer-events-none up ${error && touched ? 'text-rose-400' : ''} transition-all duration-200 `}>{label}</label>
                 <input
                     ref={inptRef}
                     id={name}
@@ -40,7 +39,7 @@ const Opts = ({ label, name, options, formik, ...props }) => {
                     onChange={handleInptChange}
                     onBlur={(e) => { setShowOpts(false); formik?.handleBlur(e) }}
                     onFocus={() => setShowOpts(true)}
-                    className={`cursor-pointer w-full px-4 py-2 text-base text-gray-700 border rounded-lg outline-none  duration-200 font-medium appearance-none ${error && touched ? 'border-rose-400' : showOpts ? 'border-blue-500' : ''} brdoer-gray-200 hover:border-blue-500`}
+                    className={`cursor-pointer w-full px-4 py-2 text-base text-gray-700 border rounded-lg outline-none  duration-200 font-medium appearance-none ${error && touched ? 'border-rose-400' : showOpts ? 'border-emerald-500' : ''} brdoer-gray-200 hover:border-emerald-500`}
                     {...props}
                 />
                 {

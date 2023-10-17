@@ -23,7 +23,7 @@ export const MaterialProvider = ({ children }) => {
     const API_MATERIALES_URL = 'api/materiales/'
 
     async function getMaterial(id) {
-        const resp = await myAxios.get(API_MATERIALES_URL + id + '/')
+        const resp = await myAxios.get(API_MATERIALES_URL + id)
         return resp.data
     }
 
@@ -49,12 +49,14 @@ export const MaterialProvider = ({ children }) => {
         }
     }
 
-    async function deleteMaterial(id) {
-        try {
-            const resp = await myAxios.delete(API_MATERIALES_URL + id + '/');
-            notify(resp.data.message)
-        } catch (err) {
-            notify("No fue posible eliminar el material", true);
+    async function deleteMaterial(list) {
+        for (let i = 0; i < list.length; i++) {
+            try {
+                const resp = await myAxios.delete(API_MATERIALES_URL+list[i])
+                notify(resp.data.message)
+            } catch (err) {
+                notify('No fue posible eliminar el material', true)
+            } 
         }
     }
 
@@ -63,9 +65,8 @@ export const MaterialProvider = ({ children }) => {
         Object.keys(material).forEach(key => {
             if (material[key] !== null && material[key] !== '') formData.append(key, material[key])
         })
-
         try {
-            const response = await myAxios.put(API_MATERIALES_URL + material.id + '/', formData);
+            const response = await myAxios.put(API_MATERIALES_URL + material.idMaterial, formData);
             notify(response.data.message);
         } catch (error) {
             notify("No fue posible actualizar el material", true);

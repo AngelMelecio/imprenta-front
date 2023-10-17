@@ -34,7 +34,7 @@ const ImgInpt = ({ formik, name, selecting, ...props }) => {
                     {...props}
                 />
                 <label
-                    className='absolute left-0 w-full h-full text-white rounded-full shadow-md btn-naranja total-center'
+                    className='absolute left-0 w-full h-full text-white rounded-full shadow-md btn-emerald total-center'
                     htmlFor={name} >
                     <MyIcons.Camera size="24px" />
                 </label>

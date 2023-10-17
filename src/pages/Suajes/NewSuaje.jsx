@@ -5,14 +5,14 @@ import Opts from '../../components/Opts'
 import { useFormik } from 'formik'
 import ImgInpt from '../../components/ImgInpt'
 import AbsScroll from '../../components/AbsScroll'
-//import { useUsuarios } from './hooks/UsuariosContext'
+import { useSuaje } from './hooks/SuajeContext'
 import { MyIcons } from '../../constants/Icons'
 
 const NewSuaje = () => {
 
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
-  //const { createUser } = useUsuarios()
+  const { createSuaje } = useSuaje()
 
   const userFormik = useFormik({
     initialValues: {},
@@ -50,10 +50,9 @@ const NewSuaje = () => {
     },
     onSubmit: async (values) => {
       try {
-        console.log(values)
         setLoading(true)
-        //await createUser(values)
-        //navigate('/materiales')
+        await createSuaje(values)
+        navigate('/suajes')
 
       } catch (e) {
 
@@ -69,7 +68,7 @@ const NewSuaje = () => {
         <div className='flex flex-row'>
           <button
             type='button'
-            onClick={() => navigate('/materiales')}
+            onClick={() => navigate('/suajes')}
             className="w-10 h-10 rounded-full btn-neutral total-center"> <MyIcons.Left size="30px" color='#047857' /> </button>
           <h1 className='pl-3 text-3xl text-emerald-800 '>Nuevo Suaje</h1>
         </div>

@@ -5,7 +5,7 @@ import { useAuth } from '../context/authContext'
 
 const LoginPage = () => {
 
-  const { signIn } = useAuth()
+  const { signIn,notify} = useAuth()
 
   const [loading, setLoading] = useState(false)
 
@@ -24,7 +24,7 @@ const LoginPage = () => {
         setLoading(true)
         await signIn(values)
       } catch (e) {
-        console.log("Catched: ", e)
+        notify(e.message, true)
       } finally {
         setLoading(false)
       }

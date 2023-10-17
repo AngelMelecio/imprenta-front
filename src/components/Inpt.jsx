@@ -11,6 +11,7 @@ const Inpt = ({ label, name, formik, ...props }) => {
     useEffect(() => {
         setError(formik?.errors[name])
         setTouched(formik?.touched[name])
+        setHasValue(formik?.values[name])
     }, [formik])
 
     const handleFocus = (e) => {
