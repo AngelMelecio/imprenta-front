@@ -35,29 +35,42 @@ export const AxiosProvider = ({ children }) => {
     }   
     */
 
-    
+
     const { signOut } = useAuth()
 
     const myAxios = axios.create({
         baseURL: HOST,
         headers: {
-            
+
             "Content-type": "multipart/form-data",
         },
     })
 
-    /**
-     * Try to get the token from the local storage
-     * and set it as the default header
-     */
     myAxios.interceptors.request.use(
         async (config) => {
-            console.log( 'Theres a request:', config )
+            console.log('Theres a request:', config)
+
+            /**
+             * Try to get the token from the local storage
+             * and set it as the default header
+             */
             const session = localStorage.getItem('auth')
             if (session) {
                 let acces_token = JSON.parse(session).access
                 config.headers["Authorization"] =
                     `Bearer ${acces_token}`;
+            }
+            /**
+             * dynamically set the Content-Type header 
+                based on the data being sent in the POST request. 
+            */
+            if (config.method === 'post') {
+                if (config.data instanceof FormData) {
+                    config.headers['Content-Type'] = 'multipart/form-data';
+                }
+                else if (typeof config.data === 'object') {
+                    config.headers['Content-Type'] = 'application/json';
+                }
             }
             return config;
         },
@@ -99,7 +112,7 @@ export const AxiosProvider = ({ children }) => {
                 } catch (refreshTokenError) {
                     signOut()
                     return Promise.reject(refreshTokenError);
-                }finally{
+                } finally {
                     isRefreshing = false;
                 }
             }
