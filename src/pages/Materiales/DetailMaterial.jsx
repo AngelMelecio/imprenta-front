@@ -4,13 +4,13 @@ import Inpt from '../../components/Inpt'
 import Opts from '../../components/Opts'
 import { useFormik } from 'formik'
 import AbsScroll from '../../components/AbsScroll'
-//import { useUsuarios } from './hooks/UsuariosContext'
+import { useMaterial } from './hooks/MaterialContext'
 
 import { MyIcons } from '../../constants/Icons'
 const DetailUsuario = () => {
 
-  //let { id } = useParams()
-  //const { getUser, updateUser } = useUsuarios()
+  let { id } = useParams()
+  const { getMaterial, updateMaterial } = useMaterial()
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true)
@@ -53,10 +53,8 @@ const DetailUsuario = () => {
     onSubmit: async (values) => {
       try {
         setLoading(true)
-
-
-        //await updateUser(values, newPassword)
-        //navigate('/usuarios')
+        await updateMaterial(values)
+        navigate('/materiales')
 
       } catch (e) {
         //console.log('Error al guardar', e)
@@ -67,7 +65,7 @@ const DetailUsuario = () => {
   })
 
   useEffect(() => {
-    /*
+    
     async function load() {
       try {
         setLoading(true)
@@ -79,7 +77,7 @@ const DetailUsuario = () => {
         setLoading(false)
       }
     }
-    load()*/
+    load()
 
   }, [])
 
@@ -103,7 +101,7 @@ const DetailUsuario = () => {
 
             <div className='flex flex-row w-full h-full p-2 total-center'>
               <div className="relative flex items-center justify-center w-full text-center">
-                <MyIcons.Paper className='' size='100px' style={{ color: '#065f46' }} />
+                <MyIcons.Pack className='' size='100px' style={{ color: '#065f46' }} />
               </div>
             </div>
             <div className='flex-grow w-full px-5 mb-6'>

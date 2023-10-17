@@ -23,7 +23,7 @@ export const SuajeProvider = ({ children }) => {
     const API_SUAJES_URL = 'api/suajes/'
 
     async function getSuaje(id) {
-        const resp = await myAxios.get(API_SUAJES_URL + id + '/')
+        const resp = await myAxios.get(API_SUAJES_URL + id )
         return resp.data
     }
 
@@ -49,14 +49,18 @@ export const SuajeProvider = ({ children }) => {
         }
     }
 
-    async function deleteSuaje(id) {
-        try {
-            const resp = await myAxios.delete(API_SUAJES_URL + id + '/');
-            notify(resp.data.message)
-        } catch (err) {
-            notify("No fue posible eliminar el suaje", true);
+    
+    async function deleteSuaje(list) {
+        for (let i = 0; i < list.length; i++) {
+            try {
+                const resp = await myAxios.delete(API_SUAJES_URL+list[i])
+                notify(resp.data.message)
+            } catch (err) {
+                notify('No fue posible eliminar el suaje', true)
+            } 
         }
     }
+
 
     async function updateSuaje(suaje) {
         let formData = new FormData()
@@ -65,7 +69,7 @@ export const SuajeProvider = ({ children }) => {
         })
 
         try {
-            const response = await myAxios.put(API_SUAJES_URL + suaje.id + '/', formData);
+            const response = await myAxios.put(API_SUAJES_URL + suaje.idSuaje, formData);
             notify(response.data.message);
         } catch (error) {
             notify("No fue posible actualizar el suaje", true);

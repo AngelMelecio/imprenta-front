@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { HOST } from '../constants/ENVs';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const AuthContext = createContext();
 
@@ -32,6 +34,20 @@ export const AuthProvider = ({ children }) => {
 
     }, [session, loading])
 
+    const notify = (message, error = false) => {
+        let options = {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        }
+        error ? toast.error(message, options) : toast.success(message, options)
+    }
+
     const signIn = async (values) => {
         const response = await fetch(HOST + 'login/', {
             method: 'POST',
@@ -44,6 +60,7 @@ export const AuthProvider = ({ children }) => {
         }
         setSession(data)
         localStorage.setItem('auth', JSON.stringify(data))
+        notify('Bienvenido ' + data.usuario.nombre)
     }
 
     const refreshToken = async () => {
@@ -67,6 +84,7 @@ export const AuthProvider = ({ children }) => {
         setSession(null)
         localStorage.removeItem('auth')
         navigate('/login')
+        notify('Sesión cerrada')
     }
 
     return (
@@ -75,9 +93,11 @@ export const AuthProvider = ({ children }) => {
                 session,
                 setSession,
                 signIn,
-                signOut
+                signOut,
+                notify
             }}>
             {children}
+            <ToastContainer />
         </AuthContext.Provider>
     );
 };

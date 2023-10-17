@@ -64,7 +64,7 @@ export const AxiosProvider = ({ children }) => {
              * dynamically set the Content-Type header 
                 based on the data being sent in the POST request. 
             */
-            if (config.method === 'post') {
+            if (config.method === 'post' || config.method === 'put' || config.method === 'delete') {
                 if (config.data instanceof FormData) {
                     config.headers['Content-Type'] = 'multipart/form-data';
                 }

@@ -1,20 +1,19 @@
 import {
     AiFillCamera as Camera,
-    AiOutlinePlus as Plus,
     AiOutlineMinus as Minus,
     AiFillEdit as Edit,
     AiOutlineShoppingCart as Cart,
 } from 'react-icons/ai'
 
 import {
-    HiFingerPrint as FingerPrint,
+    HiKey as Key,
 } from 'react-icons/hi'
 
 import {
     BiSolidPackage as Pack,
     BiSolidInfoCircle as Info,
-    BiChevronDown as Down,
-    BiChevronUp as Up,
+    //BiChevronDown as Down,
+    //BiChevronUp as Up,
     BiChevronLeft as Left,
     BiChevronRight as Right,
     BiSolidTrash as Trash,
@@ -54,7 +53,6 @@ import {
 } from 'react-icons/ai'
 
 import {
-
     IoMdPerson as Person,
     IoIosWarning as Warning,
     IoMdClose as Close,
@@ -62,7 +60,7 @@ import {
 } from 'react-icons/io'
 
 export const MyIcons = {
-    FingerPrint, Up, Down, Left, Right,
+    Up, Down, Left, Right,
     Pack, Plus, Minus, Edit, Cart,
     Chart,
     People,
@@ -78,5 +76,5 @@ export const MyIcons = {
     Cancel,
     Filter,
     Trash,
-    Alert,
+    Alert, Key,
 }

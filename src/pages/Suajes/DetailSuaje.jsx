@@ -4,13 +4,13 @@ import Inpt from '../../components/Inpt'
 import Opts from '../../components/Opts'
 import { useFormik } from 'formik'
 import AbsScroll from '../../components/AbsScroll'
-//import { useUsuarios } from './hooks/UsuariosContext'
+import { useSuaje } from './hooks/SuajeContext'
 
 import { MyIcons } from '../../constants/Icons'
 const DetailUsuario = () => {
 
-  //let { id } = useParams()
-  //const { getUser, updateUser } = useUsuarios()
+  let { id } = useParams()
+  const { getSuaje, updateSuaje } = useSuaje()
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true)
@@ -52,14 +52,11 @@ const DetailUsuario = () => {
     onSubmit: async (values) => {
       try {
         setLoading(true)
-        console.log(values)
-
-
-        //await updateUser(values, newPassword)
-        //navigate('/usuarios')
+        await updateSuaje(values)
+        navigate('/suajes')
 
       } catch (e) {
-        //console.log('Error al guardar', e)
+
       } finally {
         setLoading(false)
       }
@@ -67,19 +64,18 @@ const DetailUsuario = () => {
   })
 
   useEffect(() => {
-    /*
     async function load() {
       try {
         setLoading(true)
-        const material = await getMaterial(id)
-        userFormik.setValues(material)
+        const suaje = await getSuaje(id)
+        userFormik.setValues(suaje)
       } catch (e) {
         //console.log('Error al traer detalles', e)
       } finally {
         setLoading(false)
       }
     }
-    load()*/
+    load()
 
   }, [])
 
