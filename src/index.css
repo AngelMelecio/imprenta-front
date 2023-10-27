@@ -110,7 +110,7 @@ h1 {
 
 label {
   top: 50%;
-  left: 5%;
+  left: 10px;
   transform: translateY(-50%);
   font-size: medium;
   font-weight: 600;
