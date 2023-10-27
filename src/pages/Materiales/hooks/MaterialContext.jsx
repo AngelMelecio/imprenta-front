@@ -27,6 +27,11 @@ export const MaterialProvider = ({ children }) => {
         return resp.data
     }
 
+    async function getAll() {
+        const resp = await myAxios.get(API_MATERIALES_URL)
+        return resp.data
+    }
+
     async function refreshAllMateriales() {
         try {
             const resp = await myAxios.get(API_MATERIALES_URL)
@@ -52,11 +57,11 @@ export const MaterialProvider = ({ children }) => {
     async function deleteMaterial(list) {
         for (let i = 0; i < list.length; i++) {
             try {
-                const resp = await myAxios.delete(API_MATERIALES_URL+list[i])
+                const resp = await myAxios.delete(API_MATERIALES_URL + list[i])
                 notify(resp.data.message)
             } catch (err) {
                 notify('No fue posible eliminar el material', true)
-            } 
+            }
         }
     }
 
@@ -77,7 +82,7 @@ export const MaterialProvider = ({ children }) => {
 
     return (
         <MaterialContext.Provider value={{
-            getMaterial,
+            getMaterial, getAll,
             allMateriales,
             refreshAllMateriales,
             createMaterial,
