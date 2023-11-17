@@ -1,5 +1,5 @@
-import React, { useEffect, useState} from 'react'
-import { useParams, useNavigate} from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import Inpt from '../../components/Inpt'
 import Opts from '../../components/Opts'
 import { useFormik } from 'formik'
@@ -7,6 +7,7 @@ import AbsScroll from '../../components/AbsScroll'
 import { useMaterial } from './hooks/MaterialContext'
 
 import { MyIcons } from '../../constants/Icons'
+import ForeignInpt from './components/ForeignInpt'
 const DetailUsuario = () => {
 
   let { id } = useParams()
@@ -17,28 +18,23 @@ const DetailUsuario = () => {
   const [fieldChanged, setFieldChanged] = useState(false)
 
   const userFormik = useFormik({
-    initialValues: {},
+    initialValues: null,
     validate: (values) => {
       const errors = {}
 
       if (!values.categoria) {
         errors.categoria = 'Selecciona una categoría';
-      } else if (values.categoria === null) {
-        errors.categoria = 'Selecciona una categoría';
       }
 
-      if (!values.nombre) {
-        errors.nombre = 'Ingresa el nombre';
-      } else if (values.nombre.length > 25) {
-        errors.nombre = '25 caracteres o menos';
-      }
-
-      if (!values.ancho) {
-        errors.ancho = 'Ingresa el ancho';
+      if (!values.tipoMaterial) {
+        errors.tipoMaterial = 'Ingresa el tipo de material';
       }
 
       if (!values.alto) {
         errors.alto = 'Ingresa el alto';
+      }
+      if (!values.ancho) {
+        errors.ancho = 'Ingresa el ancho';
       }
 
       if (!values.precio) {
@@ -64,21 +60,19 @@ const DetailUsuario = () => {
     }
   })
 
-  useEffect(() => {
-    
-    async function load() {
-      try {
-        setLoading(true)
-        const material = await getMaterial(id)
-        userFormik.setValues(material)
-      } catch (e) {
-        //console.log('Error al traer detalles', e)
-      } finally {
-        setLoading(false)
-      }
+  async function load() {
+    try {
+      setLoading(true)
+      const material = await getMaterial(id)
+      userFormik.setValues(material)
+    } catch (e) {
+      //console.log('Error al traer detalles', e)
+    } finally {
+      setLoading(false)
     }
+  }
+  useEffect(() => {
     load()
-
   }, [])
 
   return (
@@ -109,20 +103,24 @@ const DetailUsuario = () => {
                 Datos del Material
               </h2>
             </div>
+
             <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Opts name="categoria" formik={userFormik} label="Categoria" options={[
-                { label: "Seleccione", value: null },
-                { label: "Cartulina", value: 'Cartulina' },
-                { label: "Carton", value: 'Carton' },
-                { label: "Sobres", value: 'Sobres' },
-                { label: "Materia Prima", value: 'Materia Prima' },
-                { label: "Otros", value: 'Otros' },
-              ]}
-                onKeyDown={() => setFieldChanged(true)} />
+              <ForeignInpt
+                label="Categoria"
+                name="categoria"
+                url="categoriasMateriales"
+                formik={userFormik}
+                onFieldChange={() => setFieldChanged(true)}
+              />
             </div>
             <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Inpt name="nombre" formik={userFormik} label="Nombre"
-                onKeyDown={() => setFieldChanged(true)} />
+              <ForeignInpt
+                label="Tipo de Material"
+                name="tipoMaterial"
+                url="tiposMateriales"
+                formik={userFormik}
+                onFieldChange={() => setFieldChanged(true)}
+              />
             </div>
 
             <div className="flex-grow w-full px-4 sm:w-1/2">
@@ -166,7 +164,7 @@ const DetailUsuario = () => {
                 onKeyDown={() => setFieldChanged(true)}
                 formik={userFormik} label="Stock" />
             </div>
-            
+
           </div>
         </AbsScroll>
       </div>

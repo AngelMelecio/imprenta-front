@@ -12,24 +12,41 @@ export const useMaterial = () => {
 function formatMateriales(materiales) {
     return materiales.map(material => ({
         ...material,
+        categoria: material.categoria.nombre,
+        tipoMaterial: material.tipoMaterial.nombre
     }))
+}
+
+function formatMaterial(material) {
+    return ({
+        ...material,
+        categoria: {
+            label: material.categoria.nombre,
+            value: material.categoria.idCategoria
+        },
+        tipoMaterial: {
+            label: material.tipoMaterial.nombre,
+            value: material.tipoMaterial.idTipoMaterial
+        }
+    })
 }
 
 export const MaterialProvider = ({ children }) => {
 
     const { session, notify } = useAuth()
     const { myAxios } = useAxios()
-    const [allMateriales, setAllMateriales] = useState([])
     const API_MATERIALES_URL = 'api/materiales/'
+    const [allMateriales, setAllMateriales] = useState([])
+    const [allTipoMateriales, setAllTipoMateriales] = useState([])
 
     async function getMaterial(id) {
         const resp = await myAxios.get(API_MATERIALES_URL + id)
-        return resp.data
+        return formatMaterial(resp.data)
     }
 
     async function getAll() {
         const resp = await myAxios.get(API_MATERIALES_URL)
-        return resp.data
+        return formatMateriales(resp.data)
     }
 
     async function refreshAllMateriales() {
@@ -41,7 +58,17 @@ export const MaterialProvider = ({ children }) => {
         }
     }
 
+    async function getMaterialesString(){
+        try {
+            const resp = await myAxios.get('api/materialesString')
+            return resp.data
+        } catch (err) {
+            notify("No fue posible obtener los registros", true);
+        }
+    }
+
     async function createMaterial(material) {
+        console.log(material)
         let formData = new FormData()
         Object.keys(material).forEach(key => {
             formData.append(key, material[key])
@@ -50,7 +77,8 @@ export const MaterialProvider = ({ children }) => {
             const resp = await myAxios.post(API_MATERIALES_URL, formData)
             notify(resp.data.message)
         } catch (err) {
-            notify(err.response.data.message, true);
+            console.log(err)
+            //notify(err.response.data.message, true);
         }
     }
 
@@ -78,16 +106,59 @@ export const MaterialProvider = ({ children }) => {
         }
     }
 
+    async function refreshAllTipoMateriales() {
+        try {
+            const resp = await myAxios.get('api/tiposMateriales/')
+            setAllTipoMateriales(resp.data)
 
+        } catch (err) {
+            notify("No fue posible obtener los registros", true);
+        }
+    }
+
+    async function saveTipo(tipo) {
+        try {
+            let res = await myAxios.post('api/tiposMateriales/', { nombre: tipo })
+            setAllTipoMateriales(res.data.tipos)
+            let { idTipoMaterial, nombre } = res.data.newTipo
+            notify(res.data.message)
+            return ({
+                label: nombre,
+                value: idTipoMaterial
+            })
+        } catch (e) {
+            if (e.response)
+                console.log(e.resonse)
+            else
+                throw new Error("Error de conexión")
+            //throw new Error(e.resonse)
+        }
+    }
+    async function deleteTipo(id) {
+        try {
+            await myAxios.delete(`api/tiposMateriales/${id}`)
+            refreshAllTipoMateriales()
+            notify("Tipo de material eliminado")
+        } catch (e) {
+            if (e.response)
+                console.log(e.resonse)
+            else
+                throw new Error("Error de conexión")
+        }
+    }
 
     return (
         <MaterialContext.Provider value={{
             getMaterial, getAll,
+            getMaterialesString,
             allMateriales,
             refreshAllMateriales,
             createMaterial,
             deleteMaterial,
-            updateMaterial
+            updateMaterial,
+            allTipoMateriales, refreshAllTipoMateriales,
+            saveTipo, deleteTipo
+
         }}>
             {children}
         </MaterialContext.Provider>

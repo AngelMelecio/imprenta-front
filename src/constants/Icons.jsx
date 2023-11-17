@@ -48,9 +48,12 @@ import {
     AiOutlinePlus as Plus,
     AiOutlineSearch as Lupa,
     AiOutlineClose as Cancel,
-    AiFillCaretDown as Down,
-    AiFillCaretUp as Up,
 } from 'react-icons/ai'
+
+import {
+    FiChevronDown as Down,
+    FiChevronUp as Up,
+} from 'react-icons/fi'
 
 import {
     IoMdPerson as Person,

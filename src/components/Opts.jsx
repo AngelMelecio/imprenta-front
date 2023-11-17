@@ -40,7 +40,7 @@ const Opts = ({ label, name, options, formik, selecting, ...props }) => {
           onChange={handleInptChange}
           onBlur={(e) => { setShowOpts(false); formik?.handleBlur(e) }}
           onFocus={() => setShowOpts(true)}
-          className={`cursor-pointer w-full px-4 py-2 text-base text-gray-700 border rounded-lg outline-none  duration-200 font-medium appearance-none ${error && touched ? 'border-rose-400' : showOpts ? 'border-emerald-500' : ''} brdoer-gray-200 hover:border-emerald-500`}
+          className={`cursor-pointer text-start w-full px-4 py-2 text-base text-gray-700 border rounded-lg outline-none  duration-200 font-medium appearance-none ${error && touched ? 'border-rose-400' : showOpts ? 'border-emerald-500' : ''} brdoer-gray-200 hover:border-emerald-500`}
           {...props}
         />
         {
