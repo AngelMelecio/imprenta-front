@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import Inpt from '../../components/Inpt'
-import Opts from '../../components/Opts'
 import { useFormik } from 'formik'
-import ImgInpt from '../../components/ImgInpt'
 import AbsScroll from '../../components/AbsScroll'
 import { useMaterial } from './hooks/MaterialContext'
 import { MyIcons } from '../../constants/Icons'
+import ForeignInpt from './components/ForeignInpt';
 
 const NewMateriales = () => {
 
@@ -14,49 +13,56 @@ const NewMateriales = () => {
   const navigate = useNavigate();
   const { createMaterial } = useMaterial()
 
-  const userFormik = useFormik({
+  const materialFormik = useFormik({
     initialValues: {
       categoria: null,
+      tipoMaterial: null,
+      alto: null,
+      ancho: null,
+      precio: null,
+      stock: null,
     },
     validate: (values) => {
       const errors = {}
-
       if (!values.categoria) {
         errors.categoria = 'Selecciona una categoría';
-      } else if (values.categoria === null) {
-        errors.categoria = 'Selecciona una categoría';
       }
-
-      if (!values.nombre) {
-        errors.nombre = 'Ingresa el nombre';
-      } else if (values.nombre.length > 25) {
-        errors.nombre = '25 caracteres o menos';
+      if (!values.tipoMaterial) {
+        errors.tipoMaterial = 'Ingresa el tipo';
       }
-
-      if (!values.ancho) {
-        errors.ancho = 'Ingresa el ancho';
-      }
-
       if (!values.alto) {
         errors.alto = 'Ingresa el alto';
       }
-
+      if (!values.ancho) {
+        errors.ancho = 'Ingresa el ancho';
+      }
       if (!values.precio) {
         errors.precio = 'Ingresa el precio';
       }
-
       if (!values.stock) {
         errors.stock = 'Ingresa el stock';
       }
+
+      //console.log('validating:')
+      //console.log(errors)
+      //console.log(materialFormik.touched)
+
+
       return errors
     },
     onSubmit: async (values) => {
       try {
-        console.log(values)
         setLoading(true)
-        await createMaterial(values)
-        navigate('/materiales')
+        console.log('submiting:', values)
+        await createMaterial({
+          ...values,
+          categoria: values.categoria.value,
+          tipoMaterial: values.tipoMaterial.value,
+        })
 
+        materialFormik.setValues({})
+        materialFormik.setTouched({})
+        //navigate('/materiales')
       } catch (e) {
 
       } finally {
@@ -65,8 +71,7 @@ const NewMateriales = () => {
     }
   })
   return (
-    <form className='flex flex-col w-full h-screen p-3' onSubmit={userFormik.handleSubmit}
-    >
+    <form className='flex flex-col w-full h-screen p-3' onSubmit={materialFormik.handleSubmit}>
       <div className='flex items-end justify-between pb-3'>
         <div className='flex flex-row'>
           <button
@@ -78,9 +83,9 @@ const NewMateriales = () => {
         <input className='px-10 py-1.5 rounded-lg btn-emerald' value="Guardar" type='submit' />
       </div>
       <div className='w-full h-full bg-white rounded-lg shadow-md'>
-        <AbsScroll vertical loading={userFormik.values === null}>
+        <AbsScroll vertical loading={materialFormik.values === null}>
           <div className="flex flex-wrap px-2 pt-6 sm:px-9">
-            
+
             <div className='flex flex-row w-full h-full p-2 total-center'>
               <div className="relative flex items-center justify-center w-full text-center">
                 <MyIcons.Pack className='' size='100px' style={{ color: '#065f46' }} />
@@ -91,45 +96,47 @@ const NewMateriales = () => {
                 Datos del Material
               </h2>
             </div>
+
             <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Opts name="categoria" formik={userFormik} label="Categoria" options={[
-                { label: "Seleccione", value: null },
-                { label: "Cartulina", value: 'Cartulina' },
-                { label: "Carton", value: 'Carton' },
-                { label: "Sobres", value: 'Sobres' },
-                { label: "Materia Prima", value: 'Materia Prima' },
-                { label: "Otros", value: 'Otros' },
-              ]} />
+              <ForeignInpt
+                label="Categoria"
+                name="categoria"
+                url="categoriasMateriales"
+                formik={materialFormik}
+              />
             </div>
             <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Inpt name="nombre" formik={userFormik} label="Nombre" />
+              <ForeignInpt
+                label="Tipo de Material"
+                name="tipoMaterial"
+                url="tiposMateriales"
+                formik={materialFormik}
+              />
             </div>
 
             <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Inpt type="number" step={0.1} name="ancho" formik={userFormik} label="Ancho (cm)" />
+              <Inpt type="number" step={0.1} name="alto" formik={materialFormik} label="Alto (cm)" />
             </div>
             <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Inpt type="number" step={0.1} name="alto" formik={userFormik} label="Alto (cm)" />
-            </div>
-
-            <div className="flex-grow w-full px-4 sm:w-1/3">
-              <Inpt name="grosor" formik={userFormik} label="Grosor" />
-            </div>
-
-            <div className="flex-grow w-full px-4 sm:w-1/3">
-              <Inpt name="color" formik={userFormik} label="Color" />
-            </div>
-
-            <div className="flex-grow w-full px-4 sm:w-1/3">
-              <Inpt type="number" step={0.01} name="gramaje" formik={userFormik} label="Gramaje" />
+              <Inpt type="number" step={0.1} name="ancho" formik={materialFormik} label="Ancho (cm)" />
             </div>
 
             <div className="flex-grow w-full px-4 sm:w-2/3">
-              <Inpt type="number" name="precio" formik={userFormik} label="Precio" />
+              <Inpt type="number" name="precio" formik={materialFormik} label="Precio" />
             </div>
 
             <div className="flex-grow w-full px-4 sm:w-1/3">
-              <Inpt type="number" name="stock" formik={userFormik} label="Stock" />
+              <Inpt type="number" name="stock" formik={materialFormik} label="Stock" />
+            </div>
+
+            <div className="flex-grow w-full px-4 sm:w-1/3">
+              <Inpt type="number" step={0.01} name="gramaje" formik={materialFormik} label="Gramaje" />
+            </div>
+            <div className="flex-grow w-full px-4 sm:w-1/3">
+              <Inpt name="grosor" formik={materialFormik} label="Grosor" />
+            </div>
+            <div className="flex-grow w-full px-4 sm:w-1/3">
+              <Inpt name="color" formik={materialFormik} label="Color" />
             </div>
 
           </div>

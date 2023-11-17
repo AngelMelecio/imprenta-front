@@ -7,6 +7,8 @@ import AbsScroll from '../../components/AbsScroll'
 import { categoriesOpts } from './constants/Categorias'
 import { useSuaje } from '../Suajes/hooks/SuajeContext'
 import Visualizer from './components/Visualizer'
+import MaterialLabel from './components/MaterialLabel'
+import OptsInp from '../../components/OptsInp'
 
 const CotizarPage = () => {
 
@@ -16,16 +18,24 @@ const CotizarPage = () => {
   const [loadingMaterials, setLoadingMaterials] = useState(true)
   const [loadingSuajes, setLoadingSuajes] = useState(true)
 
-  const { refreshAllMateriales, allMateriales } = useMaterial()
+  const { refreshAllMateriales, getMaterialesString, getAll } = useMaterial()
   const { refreshAllSuajes, allSuajes } = useSuaje()
 
+  const [allMateriales, setAllMateriales] = useState([])
   const [materialsOpts, setMaterialsOpts] = useState([])
   const [suajesOpts, setSuajesOpts] = useState([])
 
   async function fetchMateriales() {
     try {
       setLoadingMaterials(true)
-      await refreshAllMateriales()
+      let materiales = await getAll()
+      setAllMateriales(materiales)
+      setMaterialsOpts(materiales.map(m => ({
+        value: m.idMaterial,
+        label: `${m.categoria} ${m.tipoMaterial} ${m.alto}cm x ${m.ancho}cm ${m.gramaje ? Number(m.gramaje).toFixed(2) + "g" : ""} ${Number(m.grosor).toFixed(2) || ""} ${m.color || ""} $${m.precio}`
+      })))
+
+
     } catch (e) {
       console.log('Error al cargar materiales: ' + e)
     } finally {
@@ -66,12 +76,7 @@ const CotizarPage = () => {
     fetchMateriales()
   }, [])
 
-  useEffect(() => {
-    setMaterialsOpts(allMateriales.filter(m =>
-      m.categoria === frm?.values.categoria).map(m => ({
-        label: m.nombre, value: m.idMaterial
-      })))
-  }, [frm?.values.categoria])
+
 
   useEffect(() => {
     if (frm?.values.corte === 'suaje') {
@@ -91,7 +96,7 @@ const CotizarPage = () => {
   const handleGetVisualizerCanvas = () => {
     let canvas = { width: "1", height: "1" }
     if (frm?.values.material) {
-      let { ancho, alto } = allMateriales.find(m => m.idMaterial === frm.values.material)
+      let { ancho, alto } = allMateriales.find(m => m.idMaterial === frm.values.material.value)
       canvas = {
         width: ancho,
         height: alto
@@ -156,8 +161,8 @@ const CotizarPage = () => {
                   <div className="flex-grow w-full px-2 sm:w-1/3">
                     <Inpt
                       formik={frm}
-                      label="Ancho (cm)"
-                      name="ancho"
+                      label="Alto (cm)"
+                      name="alto"
                       type="number"
                       min="0"
                     />
@@ -165,8 +170,8 @@ const CotizarPage = () => {
                   <div className="flex-grow w-full px-2 sm:w-1/3">
                     <Inpt
                       formik={frm}
-                      label="Alto (cm)"
-                      name="alto"
+                      label="Ancho (cm)"
+                      name="ancho"
                       type="number"
                       min="0"
                     />
@@ -176,36 +181,29 @@ const CotizarPage = () => {
               {/* Material */
                 frm.values.corte && <>
                   <div className='flex-grow w-full px-2 sm:w-1/2'>
-                    <Opts
-                      label="Categoría"
-                      name="categoria"
-                      formik={frm}
-                      options={categoriesOpts}
-                      placeholder="Seleccione"
-                    />
-                  </div>
-                  <div className='flex-grow w-full px-2 sm:w-1/2'>
-                    <Opts
+                    <OptsInp
                       label="Material"
                       name="material"
                       formik={frm}
                       options={materialsOpts}
                     />
                   </div>
+                  {
+                    frm.values.material &&
+                    <div
+                      className='flex flex-col w-full'
+                      style={{ height: whiteWindowRef.current?.clientHeight }}>
+
+                      <h2 className='p-5 text-emerald-900'>Visualización</h2>
+                      <Visualizer
+                        canvas={handleGetVisualizerCanvas()}
+                        piece={handleGetVisualizerPiece()}
+                      />
+
+                    </div>
+                  }
                 </>
               }
-              <div
-                className='flex flex-col w-full'
-                style={{ height: whiteWindowRef.current?.clientHeight }}>
-                <h2 className='p-5 text-emerald-900'>Visualización</h2>
-
-                <Visualizer
-                  canvas={handleGetVisualizerCanvas()}
-                  piece={handleGetVisualizerPiece()}
-                />
-
-              </div>
-
             </div>
           </AbsScroll>
         </div>

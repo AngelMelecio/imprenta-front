@@ -6,13 +6,15 @@ import { useMaterial } from './hooks/MaterialContext'
 
 let COLUMNS = [
   { label: 'ID', atribute: 'idMaterial' },
-  { label: 'Nombre', atribute: 'nombre' },
+  { label: 'Categoria', atribute: 'categoria' },
+  { label: 'Tipo de Material', atribute: 'tipoMaterial' },
   { label: 'Ancho (cm)', atribute: 'ancho' },
   { label: 'Alto (cm)', atribute: 'alto' },
+  { label: 'Precio ($)', atribute: 'precio' },
+  { label: 'Stock', atribute: 'stock' },
   { label: 'Gramaje (g)', atribute: 'gramaje' },
   { label: 'Grosor', atribute: 'grosor' },
   { label: 'Color', atribute: 'color' },
-  { label: 'Categoria', atribute: 'categoria' },
 ]
 
 const MaterialesPage = () => {
