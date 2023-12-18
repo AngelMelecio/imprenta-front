@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import Inpt from '../../components/Inpt'
-import Opts from '../../components/Opts'
 import { useFormik } from 'formik'
-import ImgInpt from '../../components/ImgInpt'
 import AbsScroll from '../../components/AbsScroll'
 import { useSuaje } from './hooks/SuajeContext'
 import { MyIcons } from '../../constants/Icons'
@@ -36,16 +34,6 @@ const NewSuaje = () => {
       if (!values.alto) {
         errors.alto = 'Ingresa el alto';
       }
-
-      if (!values.margen) {
-        errors.margen = 'Ingresa el margen';
-      }
-
-      if (!values.precio) {
-        errors.precio = 'Ingresa el precio';
-      }
-
-     
       return errors
     },
     onSubmit: async (values) => {
@@ -77,7 +65,7 @@ const NewSuaje = () => {
       <div className='w-full h-full bg-white rounded-lg shadow-md'>
         <AbsScroll vertical loading={userFormik.values === null}>
           <div className="flex flex-wrap px-2 pt-6 sm:px-9">
-            
+
             <div className='flex flex-row w-full h-full p-2 total-center'>
               <div className="relative flex items-center justify-center w-full text-center">
                 <MyIcons.Suaje className='' size='100px' style={{ color: '#065f46' }} />
@@ -88,7 +76,7 @@ const NewSuaje = () => {
                 Datos del Suaje
               </h2>
             </div>
-            
+
             <div className="flex-grow w-full px-4 sm:w-1/2">
               <Inpt type="number" name="numero" formik={userFormik} label="Número de identificación" />
             </div>
@@ -97,19 +85,16 @@ const NewSuaje = () => {
             </div>
 
             <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Inpt type="number" step={0.1} name="ancho" formik={userFormik} label="Ancho (cm)" />
+              <Inpt
+                name="alto" formik={userFormik} label="Alto (cm)"
+                type="number" step={0.1}
+              />
             </div>
-
             <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Inpt type="number" step={0.1} name="alto" formik={userFormik} label="Alto (cm)" />
-            </div>
-
-            <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Inpt type="number" step={0.01} name="margen" formik={userFormik} label="Margen del suaje (cm)" />
-            </div>
-
-            <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Inpt type="number" step={0.1} name="precio" formik={userFormik} label="Precio" />
+              <Inpt
+                name="ancho" formik={userFormik} label="Ancho (cm)"
+                type="number" step={0.1}
+              />
             </div>
 
           </div>

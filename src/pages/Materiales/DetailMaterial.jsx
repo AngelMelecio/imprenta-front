@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Inpt from '../../components/Inpt'
-import Opts from '../../components/Opts'
 import { useFormik } from 'formik'
 import AbsScroll from '../../components/AbsScroll'
 import { useMaterial } from './hooks/MaterialContext'

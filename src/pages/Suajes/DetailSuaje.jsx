@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Inpt from '../../components/Inpt'
-import Opts from '../../components/Opts'
 import { useFormik } from 'formik'
 import AbsScroll from '../../components/AbsScroll'
 import { useSuaje } from './hooks/SuajeContext'
@@ -20,33 +19,20 @@ const DetailUsuario = () => {
     initialValues: {},
     validate: (values) => {
       const errors = {}
-
       if (!values.numero) {
         errors.numero = 'Ingresa el número de identificación';
       } else if (values.numero <= 0) {
         errors.numero = 'Ingresa un número mayor a 0';
       }
-
       if (!values.numeroCortes) {
         errors.numeroCortes = 'Ingresa el número de cortes';
       }
-
       if (!values.ancho) {
         errors.ancho = 'Ingresa el ancho';
       }
-
       if (!values.alto) {
         errors.alto = 'Ingresa el alto';
       }
-
-      if (!values.margen) {
-        errors.margen = 'Ingresa el margen';
-      }
-
-      if (!values.precio) {
-        errors.precio = 'Ingresa el precio';
-      }
-
       return errors
     },
     onSubmit: async (values) => {
@@ -119,30 +105,20 @@ const DetailUsuario = () => {
                 formik={userFormik} label="Número de cortes (etiquetas)" />
             </div>
 
-            <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Inpt type="number" step={0.1} name="ancho"
-                onKeyDown={() => setFieldChanged(true)}
-                formik={userFormik} label="Ancho (cm)" />
-            </div>
 
             <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Inpt type="number" step={0.1} name="alto"
+              <Inpt type="number" step={0.1}
+                name="alto"
                 onKeyDown={() => setFieldChanged(true)}
                 formik={userFormik} label="Alto (cm)" />
             </div>
-
+            
             <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Inpt type="number" step={0.01} name="margen"
+              <Inpt type="number" step={0.1}
+                name="ancho"
                 onKeyDown={() => setFieldChanged(true)}
-                formik={userFormik} label="Margen del suaje (cm)" />
+                formik={userFormik} label="Ancho (cm)" />
             </div>
-
-            <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Inpt type="number" step={0.1} name="precio"
-                onKeyDown={() => setFieldChanged(true)}
-                formik={userFormik} label="Precio" />
-            </div>
-
           </div>
         </AbsScroll>
       </div>

@@ -8,6 +8,7 @@ const OptsInp = ({
     options,
     formik,
     fieldChange,
+    loading,
     ...props
 }) => {
 
@@ -25,6 +26,9 @@ const OptsInp = ({
         )
     }, [formik])
 
+    useEffect(()=>{
+        setFilteredOpts([...options])
+    },[options])
 
     const handleOptClick = (e, option) => {
         inptRef.current.blur()
@@ -83,8 +87,8 @@ const OptsInp = ({
                     showOpts &&
                     <ul
                         style={{ height: `${inptRef.current?.clientHeight * Math.min(filteredOpts.length, 4)}px` }}
-                        className={`absolute z-10 w-full mt-1  bg-white border border-gray-200 divide-y divide-gray-100 max-h-40 rounded-md`}>
-                        <AbsScroll vertical>
+                        className={`absolute z-10 w-full mt-1  bg-white border border-gray-200 divide-y divide-gray-100 max-h-40 rounded-md shadow-md`}>
+                        <AbsScroll vertical loading={loading}>
                             {filteredOpts.map((option, index) => (
                                 <li
                                     key={index}

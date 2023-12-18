@@ -7,7 +7,7 @@ const AbsScroll = ({
     loading,
     children,
     onBottomReached,
-    setBottom
+    setBottom,  
 }) => {
 
     const pageRef = useRef(null)
