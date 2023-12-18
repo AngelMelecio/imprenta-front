@@ -10,7 +10,6 @@ let COLUMNS = [
   { label: 'Ancho (cm)', atribute: 'ancho' },
   { label: 'Alto (cm)', atribute: 'alto' },
   { label: 'Cortes', atribute: 'numeroCortes' },
-  { label: 'Precio', atribute: 'precio' },
 ]
 
 const SuajesPage = () => {

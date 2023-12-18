@@ -17,6 +17,10 @@ import {
     BiChevronLeft as Left,
     BiChevronRight as Right,
     BiSolidTrash as Trash,
+    BiBorderBottom as BorderBottom,
+    BiBorderTop as BorderTop,
+    BiBorderLeft as BorderLeft,
+    BiBorderRight as BorderRight,
 } from 'react-icons/bi'
 
 import {
@@ -62,6 +66,8 @@ import {
     IoIosWarning as Alert,
 } from 'react-icons/io'
 
+import { RxMargin as margin } from "react-icons/rx";
+
 export const MyIcons = {
     Up, Down, Left, Right,
     Pack, Plus, Minus, Edit, Cart,
@@ -80,4 +86,9 @@ export const MyIcons = {
     Filter,
     Trash,
     Alert, Key,
+    margin,
+    BorderBottom,
+    BorderTop,
+    BorderLeft,
+    BorderRight,
 }
