@@ -130,13 +130,12 @@ const Visualizer = ({
 
             <div className="absolute flex items-center font-semibold text-gray-700 -bottom-14">
               <p className='pr-2 text-base italic'>
-                Cortes por fracción:
+                Etiquetas:
               </p>
               <p className='text-lg'>
-                {pieces?.main?.rows * pieces?.main?.cols}
+                {pieces?.main?.rows * pieces?.main?.cols * piece?.cortes }
               </p>
             </div>
-
           </div>
         </div>
       </div>
