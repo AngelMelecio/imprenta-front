@@ -6,13 +6,6 @@ const Visualizer = ({
   margin,
 }) => {
 
-  /*
-  useEffect(() => {
-    console.log('canvas', canvas)
-    console.log('piece', piece)
-    console.log('pieces', pieces)
-  }, [canvas, piece, pieces])
-   */
 
   const visualizerRef = useRef()
   const materialRef = useRef()
@@ -34,16 +27,7 @@ const Visualizer = ({
       margin?.left > margin_x ||
       margin?.top > margin_y ||
       margin?.bottom > margin_y
-      ? 'rgb(248 113 113)' : 'rgb(74 222 128)'
-
-  /*console.log('margin_x', margin_x)
-  console.log('margin_y', margin_y)
-
-  console.log('paddingT', paddingT)
-  console.log('paddingR', paddingR)
-  console.log('paddingB', paddingB)
-  console.log('paddingL', paddingL)
-*/
+      ? '#dc2626' : '#22c55e'
 
 
   return (
@@ -81,9 +65,9 @@ const Visualizer = ({
                       transform:
                         `translateX(${j * 100}%) 
                         translateY(${i * 100}%)`,
-                      boxShadow: "inset 0px 0px 0px 1px rgb(253 186 116)"
+                      boxShadow: "inset 0px 0px 0px 1px #38bdf8"
                     }}
-                    className={` absolute  rounded-sm duration-100 bg-white`}
+                    className={`absolute rounded-sm duration-100 bg-white`}
                     key={`PIECE_${i}_${j}`} >
                   </div>)
               )
@@ -142,6 +126,15 @@ const Visualizer = ({
               style={{ right: '104%', top: 0 }}
               className={`absolute font-semibold text-gray-700 `}>
               {piece.height}
+            </div>
+
+            <div className="absolute flex items-center font-semibold text-gray-700 -bottom-14">
+              <p className='pr-2 text-base italic'>
+                Cortes por fracción:
+              </p>
+              <p className='text-lg'>
+                {pieces?.main?.rows * pieces?.main?.cols}
+              </p>
             </div>
 
           </div>
