@@ -5,7 +5,7 @@ import { useAuth } from '../context/authContext'
 
 const LoginPage = () => {
 
-  const { signIn,notify} = useAuth()
+  const { signIn, notify } = useAuth()
 
   const [loading, setLoading] = useState(false)
 
@@ -22,7 +22,7 @@ const LoginPage = () => {
     onSubmit: async (values) => {
       try {
         setLoading(true)
-        await signIn(values)
+        await signIn({ ...values, usuario: values.usuario.trim() })
       } catch (e) {
         notify(e.message, true)
       } finally {
