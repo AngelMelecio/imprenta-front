@@ -51,7 +51,7 @@ const CotizarPage = () => {
   const [suajesOpts, setSuajesOpts] = useState([])
 
   const [canvas, setCanvas] = useState({ width: 1, height: 1 })
-  const [piece, setPiece] = useState({ width: 1, height: 1 })
+  const [piece, setPiece] = useState({ width: 1, height: 1, cortes: 1 })
   const [pieces, setPieces] = useState({ main: {}, remain: {} })
 
   const [margin, setMargin] = useState({})
@@ -223,17 +223,19 @@ const CotizarPage = () => {
     // Obteniendo las medidas reales de la pieza
     if (frm?.values.corte === 'Suaje') {
       if (!frm?.values.suaje) return piece
-      let { ancho, alto } = allSuajes.find(s => s.idSuaje === frm?.values.suaje.value)
+      let { ancho, alto , numeroCortes} = allSuajes.find(s => s.idSuaje === frm?.values.suaje.value)
       piece = {
         width: Math.max(alto, ancho) || 1,
-        height: Math.min(alto, ancho) || 1
+        height: Math.min(alto, ancho) || 1,
+        cortes: numeroCortes,
       }
     }
     else {
-      let { ancho, alto } = frm?.values
+      let { ancho, alto,numeroCortes } = frm?.values
       piece = {
         width: Math.max(alto, ancho) || 1,
-        height: Math.min(alto, ancho) || 1
+        height: Math.min(alto, ancho) || 1,
+        cortes: numeroCortes,
       }
     }
 
@@ -269,7 +271,8 @@ const CotizarPage = () => {
     if (!horizontal) {
       piece = {
         width: piece.height,
-        height: piece.width
+        height: piece.width,
+        cortes: piece.cortes,
       }
     }
 
@@ -329,11 +332,11 @@ const CotizarPage = () => {
 
       frm.setFieldValue('detalles', {
         totalFracciones: {
-          label: 'Total de fracciones',
+          label: 'Total de tamaños o impresiones',
           value: totalFracciones,
         },
         etquetasFraccion: {
-          label: 'Etiquetas por fracción',
+          label: 'Etiquetas por tamaño',
           value: frm.values.cortesPliego * suaje?.numeroCortes,
         },
         totalEtiquetas: {
@@ -352,11 +355,11 @@ const CotizarPage = () => {
 
       frm.setFieldValue('detalles', {
         totalFracciones: {
-          label: 'Total de fracciones',
+          label: 'Total de tamaños',
           value: frm.values.cantidadPliegos,
         },
         etquetasFraccion: {
-          label: 'Etiquetas por fracción',
+          label: 'Etiquetas por tamaño',
           value: frm.values.cortesPliego * suaje?.numeroCortes,
         },
         totalEtiquetas: {
@@ -375,7 +378,7 @@ const CotizarPage = () => {
 
       frm.setFieldValue('detalles', {
         totalFracciones: {
-          label: 'Total de fracciones',
+          label: 'Total de tamaños',
           value: totalFracciones,
         },
         totalPiezas: {
@@ -395,7 +398,7 @@ const CotizarPage = () => {
 
       frm.setFieldValue('detalles', {
         totalFracciones: {
-          label: 'Total de fracciones',
+          label: 'Total de tamaños',
           value: frm.values.cantidadPliegos,
         },
         totalPiezas: {

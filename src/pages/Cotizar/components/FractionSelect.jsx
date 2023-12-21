@@ -7,14 +7,14 @@ let fractions = [
     { name: '1/6', w_div: 3, h_div: 2 },
     { name: '1/8', w_div: 4, h_div: 2 },
     { name: '1/10', w_div: 5, h_div: 2 },
-    { name: '1/12', w_div: 4, h_div: 3 },
+    { name: '1/12', w_div: 3, h_div: 4 },
 ]
 
 const FractionSelect = ({ formik, name }) => {
 
     return (
         <div className='px-3 py-2'>
-            <p className='pb-1 pl-4 text-sm text-gray-500'>Fracción de material</p>
+            <p className='pb-1 pl-4 text-sm text-gray-500'>Tamaño de material</p>
             <div className='flex'>
                 {fractions.map((f, i) =>
                     <button
