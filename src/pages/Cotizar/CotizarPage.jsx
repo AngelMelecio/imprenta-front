@@ -223,7 +223,7 @@ const CotizarPage = () => {
     // Obteniendo las medidas reales de la pieza
     if (frm?.values.corte === 'Suaje') {
       if (!frm?.values.suaje) return piece
-      let { ancho, alto , numeroCortes} = allSuajes.find(s => s.idSuaje === frm?.values.suaje.value)
+      let { ancho, alto, numeroCortes } = allSuajes.find(s => s.idSuaje === frm?.values.suaje.value)
       piece = {
         width: Math.max(alto, ancho) || 1,
         height: Math.min(alto, ancho) || 1,
@@ -231,7 +231,7 @@ const CotizarPage = () => {
       }
     }
     else {
-      let { ancho, alto,numeroCortes } = frm?.values
+      let { ancho, alto, numeroCortes } = frm?.values
       piece = {
         width: Math.max(alto, ancho) || 1,
         height: Math.min(alto, ancho) || 1,
@@ -330,10 +330,18 @@ const CotizarPage = () => {
 
       let totalFracciones = Math.ceil(frm.values.cantidadPiezas / (frm.values.cortesPliego * suaje?.numeroCortes))
 
+      let fraccion = frm.values.fraccion.w_div * frm.values.fraccion.h_div
+      let totalPliegos = Math.floor(totalFracciones / fraccion)
+      let residuo = totalFracciones % fraccion
+
       frm.setFieldValue('detalles', {
         totalFracciones: {
           label: 'Total de tamaños o impresiones',
           value: totalFracciones,
+        },
+        totalPliegos: {
+          label: 'Total de pliegos',
+          value: `${totalPliegos}  y  ${residuo}/${fraccion}`
         },
         etquetasFraccion: {
           label: 'Etiquetas por tamaño',
@@ -358,6 +366,10 @@ const CotizarPage = () => {
           label: 'Total de tamaños',
           value: frm.values.cantidadPliegos,
         },
+        totalPliegos: {
+          label: 'Total de pliegos',
+          value: frm.values.cantidadPliegos,
+        },
         etquetasFraccion: {
           label: 'Etiquetas por tamaño',
           value: frm.values.cortesPliego * suaje?.numeroCortes,
@@ -376,10 +388,18 @@ const CotizarPage = () => {
 
       let totalFracciones = Math.ceil(frm.values.cantidadPiezas / frm.values.cortesPliego)
 
+      let fraccion = frm.values.fraccion.w_div * frm.values.fraccion.h_div
+      let totalPliegos = Math.floor(totalFracciones / fraccion)
+      let residuo = totalFracciones % fraccion
+
       frm.setFieldValue('detalles', {
         totalFracciones: {
           label: 'Total de tamaños',
           value: totalFracciones,
+        },
+        totalPliegos: {
+          label: 'Total de pliegos',
+          value: `${totalPliegos}  y  ${residuo}/${fraccion}`
         },
         totalPiezas: {
           label: 'Total de piezas',
@@ -399,6 +419,10 @@ const CotizarPage = () => {
       frm.setFieldValue('detalles', {
         totalFracciones: {
           label: 'Total de tamaños',
+          value: frm.values.cantidadPliegos,
+        },
+        totalPliegos: {
+          label: 'Total de pliegos',
           value: frm.values.cantidadPliegos,
         },
         totalPiezas: {
