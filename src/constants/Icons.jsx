@@ -38,7 +38,8 @@ import {
     FaFileInvoiceDollar as Cotizar
 } from 'react-icons/fa'
 import {
-    RiFilePaper2Line as Paper
+    RiFilePaper2Line as Paper,
+    RiInkBottleFill as Ink,
 } from 'react-icons/ri'
 
 import {
@@ -91,4 +92,5 @@ export const MyIcons = {
     BorderTop,
     BorderLeft,
     BorderRight,
+    Ink,
 }

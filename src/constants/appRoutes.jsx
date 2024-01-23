@@ -11,6 +11,9 @@ import NewSuaje from "../pages/Suajes/NewSuaje";
 import UsuariosPage from '../pages/Usuarios/UsuariosPage'
 import DetailUsuario from "../pages/Usuarios/DetailUsuario";
 import NewUsuario from "../pages/Usuarios/NewUsuario";
+import TintasPage from "../pages/Tintas/TintasPage";
+import NewTinta from "../pages/Tintas/NewTinta";
+import DetailTinta from "../pages/Tintas/DetailTinta";
 
 export const adminRoutes = [
     //Usuarios
@@ -25,6 +28,10 @@ export const adminRoutes = [
     {path:'/suajes', element: <SuajesPage/>},
     {path:'/suajes/0', element: <NewSuaje/>},
     {path:'/suajes/:id', element: <DetailSuaje/>},
+    //Precios de tintas
+    {path:'/precios_tintas', element: <TintasPage/>},
+    {path:'/precios_tintas/0', element: <NewTinta/>},
+    {path:'/precios_tintas/:id', element: <DetailTinta/>},
     //Cotizar
     {path:'/cotizar', element: <CotizarPage/>},
 ]
@@ -34,6 +41,7 @@ export const adminTabs = [
     {to:'/cotizar', content:'Cotizar', icon: <MyIcons.Cotizar size={"20px"}/> },
     {to:'/materiales', content:'Materiales', icon: <MyIcons.Pack size={"27px"}/>},
     {to:'/suajes', content:'Suajes', icon: <MyIcons.Suaje size={"20px"}/> },
+    {to:'/precios_tintas', content:'Precios de tintas', icon: <MyIcons.Ink size={"20px"}/> },
 ]
 
 export const baseTabs = [

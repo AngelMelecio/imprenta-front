@@ -17,6 +17,8 @@ const ForeignInpt = ({
     url,
     formik,
     onFieldChange,
+    value = null,
+    showErrors = true,
     ...props
 }) => {
 
@@ -65,7 +67,7 @@ const ForeignInpt = ({
             let response = await myAxios.delete(`api/${url}/${id}`)
             let { message, newOptsList } = response.data
             setAllOptions(formatOptsList(newOptsList))
-            if (id === formik.values[name]?.value) {
+            if (id === formik?.values[name]?.value) {
                 formik.setFieldValue(name, null)
                 setNewOptName('')
             }
@@ -93,10 +95,11 @@ const ForeignInpt = ({
     }, [allOptions])
 
     useEffect(() => {
+
         setErrors(
             formik.errors[name] && formik.touched[name]
         )
-    }, [formik])
+    }, [formik.values, formik.errors, formik.touched])
 
     // Controls
     const handleChange = (e) => {
@@ -114,10 +117,11 @@ const ForeignInpt = ({
         onFieldChange && onFieldChange()
     }
 
-    const handleBlur = () => {
+    const handleBlur = (e) => {
         setShowOpts(false)
         setNewOptName('')
         setFilteredOpts([...allOptions])
+        formik?.handleBlur(e)
     }
 
     return (
@@ -129,10 +133,11 @@ const ForeignInpt = ({
                 bg-white px-1 pointer-events-none up transition-all duration-200 `}>{label}</label>
                 <input ref={inptRef}
                     id={name}
+                    name={name}
                     onChange={handleChange}
-                    readOnly={formik?.values[name]?.label ? true : false}
-                    value={formik?.values[name]?.label || newOptName}
-                    onBlur={(e) => { handleBlur(); formik?.handleBlur(e) }}
+                    readOnly={(value || formik?.values[name]?.label) ? true : false}
+                    value={value || formik?.values[name]?.label || newOptName}
+                    onBlur={handleBlur}
                     onFocus={() => setShowOpts(true)}
                     autoComplete='off'
                     className={`cursor-pointer w-full px-4 py-2 text-base text-gray-700 border rounded-lg outline-none  duration-200 font-medium appearance-none brdoer-gray-200 
@@ -140,11 +145,11 @@ const ForeignInpt = ({
                     {...props}
                 />
                 {/* Inpt Arrow / Clear */}
-                {formik.values[name] ?
+                {(value || formik?.values[name]) ?
                     <button type="button"
                         onClick={() => formik?.setFieldValue(name, null)}
                         className='absolute w-8 h-8 text-gray-600 -translate-y-1/2 rounded-md right-1.5 hover:bg-gray-100 total-center top-1/2'>
-                        <MyIcons.Cancel size="18px" />
+                        <MyIcons.Cancel size="15px" />
                     </button>
                     :
                     <button
@@ -190,14 +195,15 @@ const ForeignInpt = ({
                 }
             </div>
             {/* Errors */}
-            <div className={`flex pl-1 text-sm h-9 text-rose-400 
-            ${errors ? 'opacity-100' : 'opacity-0'}         
-            duration-200`}>
-                {errors && <>
-                    <MyIcons.Info style={{ margin: '3px' }} />
-                    {formik.errors[name]}
-                </>}
-            </div>
+            {showErrors &&
+                <div className={`flex pl-1 text-sm h-9 text-rose-400 duration-200
+                    ${errors ? 'opacity-100' : 'opacity-0'}`}>
+                    {errors && <>
+                        <MyIcons.Info style={{ margin: '3px' }} />
+                        {formik.errors[name]}
+                    </>}
+                </div>
+            }
         </div>
     )
 }

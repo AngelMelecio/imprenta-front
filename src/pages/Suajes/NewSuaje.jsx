@@ -50,8 +50,7 @@ const NewSuaje = () => {
     }
   })
   return (
-    <form className='flex flex-col w-full h-screen p-3' onSubmit={userFormik.handleSubmit}
-    >
+    <form className='flex flex-col w-full h-screen p-3' onSubmit={userFormik.handleSubmit}>
       <div className='flex items-end justify-between pb-3'>
         <div className='flex flex-row'>
           <button
