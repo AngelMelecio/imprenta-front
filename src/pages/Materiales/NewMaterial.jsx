@@ -42,6 +42,9 @@ const NewMateriales = () => {
       if (!values.stock) {
         errors.stock = 'Ingresa el stock';
       }
+      if (!values.alturaGuillotina) {
+        errors.alturaGuillotina = 'Ingresa la altura máxima para guillotina';
+      }
 
       //console.log('validating:')
       //console.log(errors)
@@ -137,6 +140,13 @@ const NewMateriales = () => {
             </div>
             <div className="flex-grow w-full px-4 sm:w-1/3">
               <Inpt name="color" formik={materialFormik} label="Color" />
+            </div>
+
+            <div className="flex-grow w-full px-4 sm:w-1/2">
+              <Inpt type="text" step={0.1} name="otros" formik={materialFormik} label="Otros" />
+            </div>
+            <div className="flex-grow w-full px-4 sm:w-1/2">
+              <Inpt type="number" name="alturaGuillotina" formik={materialFormik} label="Altura máxima para guillotina (en pliegos)" />
             </div>
 
           </div>

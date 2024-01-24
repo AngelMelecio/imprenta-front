@@ -43,6 +43,11 @@ const DetailUsuario = () => {
       if (!values.stock) {
         errors.stock = 'Ingresa el stock';
       }
+
+      if (!values.alturaGuillotina) {
+        errors.alturaGuillotina = 'Ingresa la altura máxima para guillotina';
+      }
+
       return errors
     },
     onSubmit: async (values) => {
@@ -162,6 +167,17 @@ const DetailUsuario = () => {
               <Inpt type="number" name="stock"
                 onKeyDown={() => setFieldChanged(true)}
                 formik={userFormik} label="Stock" />
+            </div>
+
+            <div className="flex-grow w-full px-4 sm:w-1/2">
+              <Inpt type="text" step={0.1}
+                name="otros" formik={userFormik} label="Otros"
+                onKeyDown={() => setFieldChanged(true)} />
+            </div>
+            <div className="flex-grow w-full px-4 sm:w-1/2">
+              <Inpt type="number" name="alturaGuillotina"
+                formik={userFormik} label="Altura máxima para guillotina (en pliegos)"
+                onKeyDown={() => setFieldChanged(true)} />
             </div>
 
           </div>

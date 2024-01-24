@@ -34,6 +34,16 @@ const NewSuaje = () => {
       if (!values.alto) {
         errors.alto = 'Ingresa el alto';
       }
+
+      if (!values.cantidad) {
+        errors.cantidad = 'Ingresa la cantidad';
+      }
+
+      if (!values.precio) {
+        errors.precio = 'Ingresa el precio';
+      } else if (values.precio <= 0) {
+        errors.precio = 'Ingresa un precio mayor a 0';
+      }
       return errors
     },
     onSubmit: async (values) => {
@@ -94,6 +104,24 @@ const NewSuaje = () => {
                 name="ancho" formik={userFormik} label="Ancho (cm)"
                 type="number" step={0.1}
               />
+            </div>
+            
+            <div className='flex-grow w-full px-5 mb-6'>
+              <h2 className='text-lg font-bold text-emerald-800 '>
+                Defina el precio del suaje por cantidad
+              </h2>
+            </div>
+            
+            <div className="flex-grow w-full px-4 sm:w-1/2">
+              <Inpt type="number" step={1}
+                name="cantidad"
+                formik={userFormik} label="Cantidad (Etiquetas)" />
+            </div>
+
+            <div className="flex-grow w-full px-4 sm:w-1/2">
+              <Inpt type="number" step={0.1}
+                name="precio"
+                formik={userFormik} label="Precio $" />
             </div>
 
           </div>
