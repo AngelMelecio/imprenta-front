@@ -17,7 +17,7 @@ let initDetails = {
   suaje: {
     suaje: '',
     piezasSuaje: '',
-    totalFracciones: '',
+    auxTotalImpresiones: '',
     totalSuajadas: '',
     minPiezas: '',
   },
@@ -25,7 +25,7 @@ let initDetails = {
     alto: '',
     ancho: '',
     piezas: '',
-    totalFracciones: '',
+    auxTotalImpresiones: '',
     cortesPliego: '',
     totalBajadas: '',
     minPiezas: '',
@@ -36,6 +36,7 @@ const CotizarPage = () => {
 
   const whiteWindowRef = useRef()
 
+  /* Estados para controlar la logica*/
   const { refreshAllMateriales, allMateriales } = useMaterial()
   const { refreshAllSuajes, allSuajes } = useSuaje()
 
@@ -56,12 +57,8 @@ const CotizarPage = () => {
 
   const [margin, setMargin] = useState({})
 
-
-  useEffect(() => {
-    fetchMateriales()
-    fetchSuajes()
-  }, [])
-
+  /* Funciones que traen la informacion de los materiales
+  y suajes dse la base de datos*/
   async function fetchMateriales() {
     try {
       setLoadingMaterials(true)
@@ -72,14 +69,6 @@ const CotizarPage = () => {
       setLoadingMaterials(false)
     }
   }
-
-  useEffect(() => {
-    setMaterialsOpts(allMateriales.map(m => ({
-      value: m.idMaterial,
-      label: `${m.categoria} ${m.tipoMaterial} ${m.alto}cm x ${m.ancho}cm ${m.gramaje ? Number(m.gramaje).toFixed(2) + "g" : ""} ${Number(m.grosor).toFixed(2) || ""} ${m.color || ""} $${m.precio}`
-    })))
-  }, [allMateriales])
-
   async function fetchSuajes() {
     try {
       setLoadingSuajes(true)
@@ -90,6 +79,16 @@ const CotizarPage = () => {
       setLoadingSuajes(false)
     }
   }
+
+  /* Hooks para llenar los selects con la informacion correspondiente
+  cuando cambian los suajes y materiales respectivamente*/
+  useEffect(() => {
+    setMaterialsOpts(allMateriales.map(m => ({
+      value: m.idMaterial,
+      label: `${m.categoria} ${m.tipoMaterial} ${m.alto}cm x ${m.ancho}cm ${m.gramaje ? Number(m.gramaje).toFixed(2) + "g" : ""} ${Number(m.grosor).toFixed(2) || ""} ${m.color || ""} $${m.precio}`
+    })))
+  }, [allMateriales])
+
   useEffect(() => {
     setSuajesOpts(allSuajes.map(s => ({
       label: `no.${s.numero} / ${s.ancho} cm x ${s.alto} cm / Cortes: ${s.numeroCortes}`,
@@ -97,6 +96,15 @@ const CotizarPage = () => {
     })))
   }, [allSuajes])
 
+  /* Trae los datos de suajes y materiales */
+  useEffect(() => {
+    fetchMateriales()
+    fetchSuajes()
+  }, [])
+
+  /* useFormik sirve para definir valores iniciales, 
+  control y validacion de los datos asi como controlar 
+  eventos (onsubmit) */
   const frm = useFormik({
     initialValues: {
       fraccion: { name: '1', w_div: 1, h_div: 1 },
@@ -107,6 +115,7 @@ const CotizarPage = () => {
       margin_left: 1.5,
       margin_right: 1.5,
       detailedMargin: false,
+      precioBajadaGuillotina: 2,
     },
     validate: (values) => {
       const errors = {}
@@ -114,17 +123,24 @@ const CotizarPage = () => {
         if (!values.cantidadPliegos) {
           errors.cantidadPiezas = 'Ingresa el número de piezas'
           errors.cantidadPliegos = 'Ingresa el número de pliegos'
+        } else if (values.cantidadPliegos <= 0) {
+          errors.cantidadPliegos = 'Ingresa un número mayor a 0'
         }
-      }
-      else
+      } else {
         if (values.cantidadPliegos) {
           errors.cantidadPiezas = 'Solo un campo es requerido'
           errors.cantidadPliegos = 'Solo un campo es requerido'
+        } else if (values.cantidadPiezas <= 0) {
+          errors.cantidadPiezas = 'Ingresa un número mayor a 0'
         }
-
-      if (values.corte === 'Guillotina' && !values.capas) {
-        errors.capas = 'Ingresa el número de capas'
       }
+
+      if (!values.precioBajadaGuillotina) {
+        errors.precioBajadaGuillotina = 'Ingresa el precio por bajada'
+      } else if (values.precioBajadaGuillotina <= 0) {
+        errors.precioBajadaGuillotina = 'Ingresa un precio mayor a 0';
+      }
+
       return errors
     },
     onSubmit: async (values) => {
@@ -135,13 +151,16 @@ const CotizarPage = () => {
         //setShowModal(true)
 
       } catch (e) {
-
+        console.log(e)
       } finally {
         setLoading(false)
       }
     }
   })
 
+  /* Dependiendo de la seleccion del tipo de trabajo
+  adicionamos un nuevo value (conjunto de datos) al useFormik 
+  para controlar el calculo de detalles e informacion relevante.*/
   useEffect(() => {
     frm.setFieldValue('detalles',
       frm.values.corte === "Suaje"
@@ -161,8 +180,9 @@ const CotizarPage = () => {
     frm.values.ancho,
     frm.values.alto
   ])
-
-
+  /* Llamamos a la funcion calculateArrangement cada vez que cambia
+  alguno de los siguientes valores: material, suaje, medidas para guillotina, 
+  fraccion y margenes */
   useEffect(() => {
     calculateArrangement()
   }, [
@@ -179,6 +199,8 @@ const CotizarPage = () => {
     frm?.values.detailedMargin,
   ])
 
+  /* Llamamos a la funcion calculateMargin cada vez que cambia
+  el valor de los margenes */
   useEffect(() => {
     calculateMargin()
   }, [
@@ -190,6 +212,8 @@ const CotizarPage = () => {
     frm?.values.detailedMargin,
   ])
 
+  /* Funcion para calcular el acomodo de los cuadrilateros (suajes o piezas)
+  en el visualizador */
   const calculateArrangement = () => {
     let canvas = { width: 1, height: 1 }
     let piece = { width: 1, height: 1 }
@@ -200,7 +224,6 @@ const CotizarPage = () => {
       // Dividiendo por la fracción seleccionada
       ancho /= frm?.values['fraccion'].w_div
       alto /= frm?.values['fraccion'].h_div
-
 
       canvas = {
         width: Math.max(alto, ancho).toFixed(2),
@@ -282,6 +305,8 @@ const CotizarPage = () => {
     frm.setFieldValue('detalles', null)
   }
 
+  /* Funcion para settear los valores de los margenes
+  de forma general o especifica */
   const calculateMargin = () => {
     if (frm.values.detailedMargin) {
       setMargin({
@@ -322,26 +347,38 @@ const CotizarPage = () => {
     }
   }
 
+  /*Calcula los detalles de la cotizacion asi como los costos
+  en base a los datos ingresados por el usuario*/
   const calcularDetalles = (values) => {
-
+    let material = allMateriales.find(m => m.idMaterial === frm?.values?.material?.value)
     let suaje = allSuajes.find(s => s.idSuaje === frm?.values?.suaje?.value)
+    let fraccion = frm.values.fraccion.w_div * frm.values.fraccion.h_div
 
     if (values.corte === 'Suaje' && frm.values.cantidadPiezas) {
 
-      let totalFracciones = Math.ceil(frm.values.cantidadPiezas / (frm.values.cortesPliego * suaje?.numeroCortes))
+      {
+        /*
+          let totalFracciones = Math.ceil(frm.values.cantidadPiezas / (frm.values.cortesPliego * suaje?.numeroCortes))
+          let fraccion = frm.values.fraccion.w_div * frm.values.fraccion.h_div
+          let totalPliegos = Math.floor(totalFracciones / fraccion)
+          let residuo = totalFracciones % fraccion
+        */
+      }
 
-      let fraccion = frm.values.fraccion.w_div * frm.values.fraccion.h_div
-      let totalPliegos = Math.floor(totalFracciones / fraccion)
-      let residuo = totalFracciones % fraccion
+      let tempTotalImpresiones = Math.ceil(frm.values.cantidadPiezas / (frm.values.cortesPliego * suaje?.numeroCortes))
+      let totalPliegos = Math.ceil(tempTotalImpresiones / fraccion)
+      let totalImpresiones = totalPliegos * fraccion
+      let totalEtiquetas = totalImpresiones * frm?.values.cortesPliego * suaje?.numeroCortes
+      let bajadasGuillotina = (pieces.main.rows + 1 + pieces.main.cols + 1) * Math.ceil(totalImpresiones / material?.alturaGuillotina)
 
       frm.setFieldValue('detalles', {
-        totalFracciones: {
-          label: 'Total de tamaños o impresiones',
-          value: totalFracciones,
+        totalImpresiones: {
+          label: 'Total de impresiones',
+          value: totalImpresiones,
         },
         totalPliegos: {
           label: 'Total de pliegos',
-          value: `${totalPliegos}  y  ${residuo}/${fraccion}`
+          value: totalPliegos
         },
         etquetasFraccion: {
           label: 'Etiquetas por tamaño',
@@ -349,22 +386,42 @@ const CotizarPage = () => {
         },
         totalEtiquetas: {
           label: 'Total de etiquetas',
-          value: totalFracciones * frm?.values.cortesPliego * suaje?.numeroCortes,
+          value: totalEtiquetas,
         },
-        totalSuajadas: {
+        /*totalSuajadas: {
           label: 'Total de suajadas',
-          value: totalFracciones * frm?.values.cortesPliego,
+          value: totalImpresiones * frm?.values.cortesPliego,
+        }*/
+        totalBajadas: {
+          label: 'Total de bajadas (guillotina)',
+          value: bajadasGuillotina,
+        }
+      })
+      frm.setFieldValue('totales', {
+        totalMaterial: {
+          label: 'Costo de material',
+          value: ((totalPliegos) * material?.precio).toFixed(2),
+        },
+        totalSuaje: {
+          label: 'Costo por catidad (Suaje)',
+          value: ((totalEtiquetas <= suaje.cantidad) ? suaje.precio : (totalEtiquetas * suaje.precio) / suaje.cantidad).toFixed(2),
+        },
+        totalGuillotina: {
+          label: 'Costo de guillotina (bajadas)',
+          value: (bajadasGuillotina * frm?.values.precioBajadaGuillotina).toFixed(2),
         }
       })
     }
     else if (values.corte === 'Suaje' && frm.values.cantidadPliegos) {
 
-      let totalEtiquetas = frm.values.cantidadPliegos * frm?.values.cortesPliego * suaje?.numeroCortes
+      let totalImpresiones = frm.values.cantidadPliegos * fraccion
+      let totalEtiquetas = totalImpresiones * frm?.values.cortesPliego * suaje?.numeroCortes
+      let bajadasGuillotina = (pieces.main.rows + 1 + pieces.main.cols + 1) * Math.ceil(totalImpresiones / material?.alturaGuillotina)
 
       frm.setFieldValue('detalles', {
-        totalFracciones: {
-          label: 'Total de tamaños',
-          value: frm.values.cantidadPliegos,
+        totalImpresiones: {
+          label: 'Total de impresiones',
+          value: totalImpresiones,
         },
         totalPliegos: {
           label: 'Total de pliegos',
@@ -378,48 +435,82 @@ const CotizarPage = () => {
           label: 'Total de etiquetas',
           value: totalEtiquetas,
         },
-        totalSuajadas: {
+        /*totalSuajadas: {
           label: 'Total de suajadas',
-          value: frm.values.cantidadPliegos * frm?.values.cortesPliego,
+          value: totalImpresiones * frm?.values.cortesPliego,
+        }*/
+        totalBajadas: {
+          label: 'Total de bajadas (guillotina)',
+          value: bajadasGuillotina,
+        }
+      })
+      console.log("")
+      frm.setFieldValue('totales', {
+        totalMaterial: {
+          label: 'Costo de material',
+          value: '$ ' + frm.values.cantidadPliegos * material?.precio,
+          //value: frm.values.cantidadPliegos+' pliegos x '+'$ '+material?.precio+ ' => $ ' + frm.values.cantidadPliegos * material?.precio,
+        },
+        totalSuaje: {
+          label: 'Costo por catidad (Suaje)',
+          value: '$ ' + ((totalEtiquetas <= suaje.cantidad) ? suaje.precio : (totalEtiquetas * suaje.precio) / suaje.cantidad),
+          //value: totalEtiquetas+' etiquetas '+' => $'+((totalEtiquetas <= suaje.cantidad) ? suaje.precio : (totalEtiquetas * suaje.precio) / suaje.cantidad),
+        },
+        totalGuillotina: {
+          label: 'Costo de guillotina (bajadas)',
+          value: '$ ' + (bajadasGuillotina * frm?.values.precioBajadaGuillotina),
         }
       })
     }
     else if (frm.values.corte === 'Guillotina' && frm.values.cantidadPiezas) {
 
-      let totalFracciones = Math.ceil(frm.values.cantidadPiezas / frm.values.cortesPliego)
+      let tempTotalImpresiones = Math.ceil(frm.values.cantidadPiezas / frm.values.cortesPliego)
+      let totalPliegos = Math.ceil(tempTotalImpresiones / fraccion)
+      let totalImpresiones = totalPliegos * fraccion
+      let bajadasGuillotina = (pieces.main.rows + 1 + pieces.main.cols + 1) * Math.ceil(totalImpresiones / material?.alturaGuillotina)
 
-      let fraccion = frm.values.fraccion.w_div * frm.values.fraccion.h_div
-      let totalPliegos = Math.floor(totalFracciones / fraccion)
-      let residuo = totalFracciones % fraccion
+      //let residuo = auxTotalImpresiones % fraccion
 
       frm.setFieldValue('detalles', {
-        totalFracciones: {
-          label: 'Total de tamaños',
-          value: totalFracciones,
+        totalImpresiones: {
+          label: 'Total de impresiones',
+          value: totalImpresiones,
         },
         totalPliegos: {
           label: 'Total de pliegos',
-          value: `${totalPliegos}  y  ${residuo}/${fraccion}`
+          value: totalPliegos
         },
         totalPiezas: {
           label: 'Total de piezas',
-          value: totalFracciones * frm?.values.cortesPliego,
+          value: totalImpresiones * frm?.values.cortesPliego,
         },
         totalBajadas: {
-          label: 'Total de bajadas',
-          value: (pieces.main.rows + 1 + pieces.main.cols + 1) * Math.ceil(totalFracciones / frm.values.capas),
+          label: 'Total de bajadas (guillotina)',
+          value: bajadasGuillotina,
+        }
+      })
+      frm.setFieldValue('totales', {
+        totalMaterial: {
+          label: 'Costo de material',
+          value: '$ ' + ((frm.values.cantidadPliegos) * material?.precio),
+        },
+        totalGuillotina: {
+          label: 'Costo de guillotina (bajadas)',
+          value: '$ ' + (bajadasGuillotina * frm?.values.precioBajadaGuillotina),
         }
       })
 
     }
     else if (frm.values.corte === 'Guillotina' && frm.values.cantidadPliegos) {
 
-      let totalPiezas = frm.values.cantidadPliegos * frm?.values.cortesPliego
+      let totalImpresiones = frm.values.cantidadPliegos * fraccion
+      let totalEtiquetas = totalImpresiones * frm?.values.cortesPliego
+      let bajadasGuillotina = (pieces.main.rows + 1 + pieces.main.cols + 1) * Math.ceil(totalImpresiones / material?.alturaGuillotina)
 
       frm.setFieldValue('detalles', {
-        totalFracciones: {
-          label: 'Total de tamaños',
-          value: frm.values.cantidadPliegos,
+        auxTotalImpresiones: {
+          label: 'Total de impresiones',
+          value: totalImpresiones,
         },
         totalPliegos: {
           label: 'Total de pliegos',
@@ -427,14 +518,37 @@ const CotizarPage = () => {
         },
         totalPiezas: {
           label: 'Total de piezas',
-          value: totalPiezas,
+          value: totalEtiquetas,
         },
         totalBajadas: {
-          label: 'Total de bajadas',
-          value: (pieces.main.rows + 1 + pieces.main.cols + 1) * frm.values.cantidadPliegos,
+          label: 'Total de bajadas (guillotina)',
+          value: (pieces.main.rows + 1 + pieces.main.cols + 1) * Math.ceil(totalImpresiones / material?.alturaGuillotina),
+        }
+      })
+
+      frm.setFieldValue('totales', {
+        totalMaterial: {
+          label: 'Costo de material',
+          value: '$ ' + ((frm.values.cantidadPliegos) * material?.precio),
+        },
+        totalGuillotina: {
+          label: 'Costo de guillotina (bajadas)',
+          value: '$ ' + (bajadasGuillotina * frm?.values.precioBajadaGuillotina),
         }
       })
     }
+
+    frm.setFieldValue('totales', {
+      ...frm.values.totales,
+      total: {
+        label: 'Total',
+        value: Object.keys(frm?.values.totales).reduce((total, key) => {
+          const value = Number(frm?.values.totales[key].value);
+          return total + value;
+        }, 0).toFixed(2)
+      }
+    });
+    
 
   }
 
@@ -520,77 +634,100 @@ const CotizarPage = () => {
                 }
                 {ready &&
                   // Detalles
-                  <div style={{ minHeight: whiteWindowRef.current?.clientHeight }} className='flex flex-col w-full'>
-                    <h2 className='w-full p-5 text-emerald-900'>Detalles</h2>
-                    <div className='flex flex-grow'>
-                      <div className='w-full'>
-                        <AbsScroll vertical>
-                          <FractionSelect
-                            formik={frm}
-                            name="fraccion"
-                          />
-                          <MarginSelect
-                            formik={frm}
-                            name="margin"
-                          />
-                          <div className="h-4"></div>
-                          <div className={`flex-grow w-full px-3 mt-2`}>
-                            <Inpt
-                              label="Cantidad de piezas"
-                              name="cantidadPiezas"
+                  <>
+                    <div style={{ minHeight: whiteWindowRef.current?.clientHeight }} className='flex flex-col w-full'>
+                      <h2 className='w-full p-5 text-emerald-900'>Detalles</h2>
+                      <div className='flex flex-grow'>
+                        <div className='w-full'>
+                          <AbsScroll vertical>
+                            <FractionSelect
                               formik={frm}
-                              type="number"
+                              name="fraccion"
                             />
-                          </div>
-                          <div className={`flex-grow w-full  px-3`}>
-                            <Inpt
-                              label="Cantidad de pliegos"
-                              name="cantidadPliegos"
+                            <MarginSelect
                               formik={frm}
-                              type="number"
+                              name="margin"
                             />
-                          </div>
-                          {frm?.values.corte === 'Guillotina' &&
-                            <div className={`flex-grow w-full  px-3`}>
+                            <div className="h-4"></div>
+                            <div className={`flex-grow w-full px-3 mt-2`}>
                               <Inpt
-                                label="Cantidad de capas"
-                                name="capas"
+                                label="Cantidad de piezas"
+                                name="cantidadPiezas"
                                 formik={frm}
                                 type="number"
                               />
                             </div>
+                            <div className={`flex-grow w-full  px-3`}>
+                              <Inpt
+                                label="Cantidad de pliegos"
+                                name="cantidadPliegos"
+                                formik={frm}
+                                type="number"
+                              />
+                            </div>
+                            <div className={`flex-grow w-full  px-3`}>
+                              <Inpt
+                                label="Precio por bajada (Guillotina)"
+                                name="precioBajadaGuillotina"
+                                formik={frm}
+                                type="number"
+                              />
+                            </div>
+                            {/*frm?.values.corte === 'Guillotina' &&
+                              <div className={`flex-grow w-full  px-3`}>
+                                <Inpt
+                                  label="Cantidad de capas"
+                                  name="capas"
+                                  formik={frm}
+                                  type="number"
+                                />
+                              </div>
+                            */}
+                            <div className="px-3 pb-5">
+                              <button
+                                onClick={() => calcularDetalles(frm.values)}
+                                type="button" className='w-full h-10 btn-emerald'>
+                                Calcular Detalles
+                              </button>
+                            </div>
+                            {
+                              frm?.values.detalles &&
+                              Object.keys(frm?.values.detalles).map((d, i) =>
+                                <DetailRow
+                                  key={`D_${i}`}
+                                  data={frm.values.detalles[d]} />)
+                            }
+                          </AbsScroll>
+                        </div>
+                        <div className='flex flex-col flex-grow w-full'>
 
-                          }
-                          <div className="px-3 pb-5">
-                            <button
-                              onClick={() => calcularDetalles(frm.values)}
-                              type="button" className='w-full h-10 btn-emerald'>
-                              Calcular Detalles
-                            </button>
-                          </div>
+                          <Visualizer
+                            pieces={pieces}
+                            canvas={canvas}
+                            piece={piece}
+                            margin={margin}
+                          />
+
+                          <h2 className='w-full p-5 text-emerald-900'>Cuenta</h2>
                           {
-                            frm?.values.detalles &&
-                            Object.keys(frm?.values.detalles).map((d, i) =>
+                            frm?.values.totales &&
+
+                            Object.keys(frm?.values.totales).map((d, i) =>
                               <DetailRow
                                 key={`D_${i}`}
-                                data={frm.values.detalles[d]} />)
+                                data={frm.values.totales[d]}
+                                decorador='$ '
+                              />)
                           }
-                        </AbsScroll>
+
+                        </div>
+
                       </div>
 
-                      <div className='flex flex-col flex-grow w-full'>
-
-                        <Visualizer
-                          pieces={pieces}
-                          canvas={canvas}
-                          piece={piece}
-                          margin={margin}
-
-                        />
-                      </div>
 
                     </div>
-                  </div>
+                  </>
+
                 }
               </div>
             </AbsScroll>

@@ -133,7 +133,7 @@ const Visualizer = ({
                 Etiquetas:
               </p>
               <p className='text-lg'>
-                {pieces?.main?.rows * pieces?.main?.cols * piece?.cortes }
+                {(piece?.cortes) ? pieces?.main?.rows * pieces?.main?.cols * piece?.cortes : pieces?.main?.rows * pieces?.main?.cols}
               </p>
             </div>
           </div>
