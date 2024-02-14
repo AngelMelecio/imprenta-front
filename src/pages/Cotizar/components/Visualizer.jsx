@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 const Visualizer = ({
   canvas,
   piece,
@@ -10,24 +10,41 @@ const Visualizer = ({
   const visualizerRef = useRef()
   const materialRef = useRef()
 
-  let margin_x = (canvas?.width - pieces?.main.cols * piece.width) / 2
-  let margin_y = (canvas?.height - pieces?.main.rows * piece.height) / 2
+  const [margin_pieces, setMargin_pieces] = useState({
+    x: "0",
+    y: "0"
+  })
 
-  let margin_x_p = `${(margin_x * 100 / canvas?.width).toFixed(2)}%`
-  let margin_y_p = `${(margin_y * 100 / canvas?.height).toFixed(2)}%`
+  const [padding, setPadding] = useState({
+    top: "0",
+    right: "0",
+    bottom: "0",
+    left: "0",
+    color: '#dc2626'
+  })
 
-  let paddingT = `${(margin?.top * 100 / canvas.width).toFixed(2)}%`
-  let paddingR = `${(margin?.right * 100 / canvas.width).toFixed(2)}%`
-  let paddingB = `${(margin?.bottom * 100 / canvas.width).toFixed(2)}%`
-  let paddingL = `${(margin?.left * 100 / canvas.width).toFixed(2)}%`
 
+  useEffect(() => {
+    let padding_x = (canvas?.width - pieces?.main.cols * piece.width) / 2
+    let padding_y = (canvas?.height - pieces?.main.rows * piece.height) / 2
 
-  let paddingColor =
-    margin?.right > margin_x ||
-      margin?.left > margin_x ||
-      margin?.top > margin_y ||
-      margin?.bottom > margin_y
-      ? '#dc2626' : '#22c55e'
+    setMargin_pieces({
+      x: `${(padding_x * 100 / canvas?.width).toFixed(2)}%`,
+      y: `${(padding_y * 100 / canvas?.height).toFixed(2)}%`
+    })
+    setPadding({
+      top: `${(margin?.top * 100 / canvas.width).toFixed(2)}%`,
+      right: `${(margin?.right * 100 / canvas.width).toFixed(2)}%`,
+      bottom: `${(margin?.bottom * 100 / canvas.width).toFixed(2)}%`,
+      left: `${(margin?.left * 100 / canvas.width).toFixed(2)}%`,
+      color: margin?.right > padding_x ||
+        margin?.left > padding_x ||
+        margin?.top > padding_y ||
+        margin?.bottom > padding_y
+        ? '#dc2626' : '#22c55e'
+    })
+  }, [canvas, margin])
+
 
 
   return (
@@ -58,8 +75,8 @@ const Visualizer = ({
                 Array.from({ length: pieces?.main?.cols }).map((_, j) =>
                   <div
                     style={{
-                      left: margin_x_p,
-                      top: margin_y_p,
+                      left: margin_pieces.x,
+                      top: margin_pieces.y,
                       width: `${(pieces?.main.w * 100 / canvas.width).toFixed(2)}%`,
                       height: `${(pieces?.main.h * 100 / canvas.height).toFixed(2)}%`,
                       transform:
@@ -76,14 +93,14 @@ const Visualizer = ({
               <div className="absolute w-full h-full ">
                 <div
                   style={{
-                    paddingTop: paddingT,
-                    paddingRight: paddingR,
-                    paddingBottom: paddingB,
-                    paddingLeft: paddingL
+                    paddingTop: padding.top,
+                    paddingRight: padding.right,
+                    paddingBottom: padding.bottom,
+                    paddingLeft: padding.left,
                   }}
                   className="relative flex w-full h-full">
                   <div
-                    style={{ borderColor: paddingColor }}
+                    style={{ borderColor: padding.color }}
                     className="w-full h-full border-2 border-dotted bordergreen-400 ">
                   </div>
                 </div>

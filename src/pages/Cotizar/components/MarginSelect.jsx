@@ -9,7 +9,7 @@ const detailedInpts = [
   { name: 'margin_right', icon: <MyIcons.BorderRight size="22px" /> }
 ]
 
-const MarginSelect = ({ formik, name }) => {
+const MarginSelect = ({ formik, name, className }) => {
 
   const toggleDetailed = () => {
     formik.setFieldValue('detailedMargin', !formik?.values?.detailedMargin)
@@ -20,7 +20,7 @@ const MarginSelect = ({ formik, name }) => {
   }
 
   return (
-    <div className='px-3 py-2'>
+    <div className={`px-3 py-2 ${className}`}>
       <p className='pb-1 pl-4 text-sm text-gray-500'>Margen</p>
       <div className="flex">
 
@@ -31,6 +31,8 @@ const MarginSelect = ({ formik, name }) => {
                 <MyIcons.margin size="22px" />
               </div>
               <input
+                type="number"
+                onWheel={(e) => e.target.blur()}
                 value={formik?.values[name] || ""}
                 id={name}
                 name={name}
@@ -49,6 +51,8 @@ const MarginSelect = ({ formik, name }) => {
                     {d.icon}
                   </div>
                   <input
+                    type="number"
+                    onWheel={(e) => e.target.blur()}
                     value={formik?.values[d.name] || ""}
                     id={d.name}
                     name={d.name}

@@ -69,6 +69,11 @@ import {
 
 import { RxMargin as margin } from "react-icons/rx";
 
+import { PiNotebookBold as Notes,
+    PiPaintBrushBroadBold as Brush,
+} from "react-icons/pi";
+import { BsStars as Stars } from "react-icons/bs";
+
 export const MyIcons = {
     Up, Down, Left, Right,
     Pack, Plus, Minus, Edit, Cart,
@@ -93,4 +98,7 @@ export const MyIcons = {
     BorderLeft,
     BorderRight,
     Ink,
+    Notes,
+    Stars,
+    Brush
 }

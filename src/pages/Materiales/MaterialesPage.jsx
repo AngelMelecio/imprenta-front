@@ -55,7 +55,7 @@ const MaterialesPage = () => {
         setData={setListaMateriales}
         loading={loading}
         onDelete={(items) => { setDeleteModalVisible(true); setSelectedItemsToDelete(items) }}
-      />
+      />  
       {deleteModalVisible &&
         <Modal
           image={<MyIcons.Alert size="45px" className='text-amber-300' />}

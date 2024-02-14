@@ -21,7 +21,7 @@ const FractionSelect = ({ formik, name }) => {
                         key={`frac_${i}`}
                         type='button'
                         className={`
-                            ${formik?.values[name] === f ? 'text-emerald-600 border-emerald-500' : 'text-gray-500'}
+                            ${formik?.values[name].name === f.name ? 'text-emerald-600 border-emerald-500' : 'text-gray-500'}
                             w-10 py-2 mr-2 border rounded-lg font-bold duration-150 active:opacity-70 active:duration-0`}
                         onClick={() => formik.setFieldValue(name, f)}
                     >
