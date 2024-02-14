@@ -3,7 +3,7 @@ import { MyIcons } from '../../constants/Icons'
 
 
 const SearchBar = ({ value, setValue }) => {
-    
+
     const searchRef = useRef()
     const handleSearchButtonClick = () => {
         if (value.length > 0) {
@@ -14,7 +14,7 @@ const SearchBar = ({ value, setValue }) => {
         searchRef?.current?.focus()
     }
 
-    
+
 
     return (
         <div

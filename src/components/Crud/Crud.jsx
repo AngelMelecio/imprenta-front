@@ -73,6 +73,7 @@ const Crud = ({
                   <th className='px-5'>
                     <div className='total-center'>
                       <input
+                        id="check-all"
                         className='custom-check'
                         onChange={(e) => { setData(prev => prev.map(elmt => ({ ...elmt, isChecked: e.target.checked }))) }}
                         checked={data?.some(d => d.isChecked)}
@@ -104,6 +105,7 @@ const Crud = ({
                       <td>
                         <div className='total-center'>
                           <input
+                            id={`check-${i}`}
                             className='custom-check'
                             checked={item?.isChecked || false}
                             onChange={(e) => {

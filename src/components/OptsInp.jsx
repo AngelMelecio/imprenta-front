@@ -5,10 +5,12 @@ import AbsScroll from './AbsScroll'
 const OptsInp = ({
     label,
     name,
+    value,
     options,
     formik,
     fieldChange,
     loading,
+    showErrors = true,
     ...props
 }) => {
 
@@ -24,11 +26,11 @@ const OptsInp = ({
         setError(
             formik?.errors[name] && formik?.touched[name]
         )
-    }, [formik])
+    }, [formik.values, formik.errors, formik.touched])
 
-    useEffect(()=>{
+    useEffect(() => {
         setFilteredOpts([...options])
-    },[options])
+    }, [options])
 
     const handleOptClick = (e, option) => {
         inptRef.current.blur()
@@ -61,7 +63,7 @@ const OptsInp = ({
                     id={name}
                     readOnly={formik?.values[name] ? true : false}
                     autoComplete='off'
-                    value={formik?.values[name]?.label || search}
+                    value={value || formik?.values[name]?.label || search}
                     onChange={handleInptChange}
                     onBlur={(e) => { handleBlur(); formik?.handleBlur(e) }}
                     onFocus={() => setShowOpts(true)}
@@ -69,7 +71,7 @@ const OptsInp = ({
                     {...props}
                 />
                 {/* Inpt Arrow / Clear */}
-                {formik.values[name] ?
+                {value || formik.values[name] ?
                     <button type="button"
                         onClick={() => formik?.setFieldValue(name, null)}
                         className='absolute w-8 h-8 text-gray-600 -translate-y-1/2 rounded-md right-1.5 hover:bg-gray-100 total-center top-1/2'>
@@ -104,9 +106,11 @@ const OptsInp = ({
 
 
             </div>
-            <div className={`flex pl-1 text-sm h-9 text-rose-400 ${error ? 'opacity-100' : 'opacity-0'} duration-200`}>
-                {error && <><MyIcons.Info style={{ margin: '3px' }} />{error}</>}
-            </div>
+            {showErrors &&
+                <div className={`flex pl-1 text-sm h-9 text-rose-400 ${error ? 'opacity-100' : 'opacity-0'} duration-200`}>
+                    {error && <><MyIcons.Info style={{ margin: '3px' }} />{error}</>}
+                </div>
+            }
         </div>
     )
 }

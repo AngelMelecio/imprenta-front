@@ -46,6 +46,7 @@ const Inpt = ({ label, name, formik, value = null, showErrors = true, format, ..
                     ${error ? 'border-rose-400' : isFocus ? 'border-emerald-500' : !props.readOnly ? 'hover:border-emerald-500' : ''} 
                     ${format === 'currency' ? 'pl-8' : ''}
                     `}
+                    onWheel={(e) => e.target.blur()}
                     {...props} />
             </div>{
                 showErrors &&

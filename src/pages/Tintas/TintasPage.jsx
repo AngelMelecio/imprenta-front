@@ -9,28 +9,28 @@ const COLUMNS = [
 ]
 
 const TintasPage = () => {
-  
-  const {myAxios} = useAxios()
+
+  const { myAxios } = useAxios()
 
   const [loading, setLoading] = useState(false)
   const [listaTipoImpresiones, setListaTipoImpresiones] = useState([])
 
-  const load = async()=>{
-    try{
+  const load = async () => {
+    try {
       setLoading(true)
       const res = await myAxios.get('api/tipoImpresiones/')
       setListaTipoImpresiones(res.data)
-    }catch(e){
+    } catch (e) {
       notify("Error al cargar los datos", true)
       console.log(e)
-    }finally{
+    } finally {
       setLoading(false)
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     load()
-  },[])
+  }, [])
 
   return (
     <>

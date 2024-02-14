@@ -97,7 +97,7 @@ const InptTable = ({ formik, isDetail = false, handleDeletePrecio }) => {
                                     formik={formik}
                                     value={item2.prensa?.label}
                                     name={`precios.${i}.precioColor.${j}.prensa`}
-                                    url={'prensas'}
+                                    url={'prensas_fi'}
                                     showErrors={false}
                                     type='text'
                                 />
