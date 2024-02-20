@@ -51,6 +51,7 @@ export const adminRoutes = [
     {path:'/terminados/:id', element: <DetailTerminado/>},
     //Cotizar
     {path:'/cotizar', element: <CotizarPage/>},
+    {path:'/perfil', element: <PerfilPage/>},
 ]
 
 export const adminTabs = [
