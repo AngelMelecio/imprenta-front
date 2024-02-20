@@ -73,6 +73,7 @@ import { PiNotebookBold as Notes,
     PiPaintBrushBroadBold as Brush,
 } from "react-icons/pi";
 import { BsStars as Stars } from "react-icons/bs";
+import { PiSword as Sword } from "react-icons/pi";
 
 export const MyIcons = {
     Up, Down, Left, Right,
@@ -100,5 +101,6 @@ export const MyIcons = {
     Ink,
     Notes,
     Stars,
-    Brush
+    Brush,
+    Sword,
 }
