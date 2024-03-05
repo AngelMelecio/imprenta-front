@@ -5,6 +5,8 @@ import MarginSelect from './MarginSelect'
 import Inpt from '../../../components/Inpt'
 import TintaSelect from './TintaSelect'
 import FrmTintas from './FrmTintas'
+import Opts from '../../../components/Opts'
+import FrmTerminados from './FrmTerminados'
 
 const FrmDetallesCotizacion = ({ formik, calcularDetalles, calcularTotales, pageHeight }) => {
 
@@ -47,6 +49,17 @@ const FrmDetallesCotizacion = ({ formik, calcularDetalles, calcularTotales, page
             type="number"
           />
         </div>
+        <div className={`flex-grow w-full  px-3`}>
+          <Opts
+            label="Tipo de cálculo"
+            name="calculo"
+            formik={formik}
+            options={[
+              { label: 'Regla de tres', value: 'reglaTres' },
+              { label: 'Mínimos', value: 'minimos' },
+            ]}
+          />
+        </div>
 
         <div className={`flex-grow w-full px-3`}>
           <Inpt
@@ -76,6 +89,9 @@ const FrmDetallesCotizacion = ({ formik, calcularDetalles, calcularTotales, page
             formik={formik}
           />
 
+          <FrmTerminados
+            formik={formik}
+          />
           {/*
 
             <TintaSelect

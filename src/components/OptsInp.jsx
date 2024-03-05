@@ -55,7 +55,7 @@ const OptsInp = ({
     }
 
     return (
-        <div >
+        <div>
             <div className="relative">
                 <label htmlFor={name} className={`absolute  ${showOpts ? 'text-emerald-500' : 'text-gray-500'} bg-white px-1 pointer-events-none up ${error ? 'text-rose-400' : ''} transition-all duration-200 `}>{label}</label>
                 <input
