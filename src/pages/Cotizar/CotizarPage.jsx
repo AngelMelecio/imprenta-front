@@ -16,6 +16,7 @@ import TintaSelect from './components/TintaSelect'
 import FrmTipoCotizacion from './components/FrmTipoCotizacion'
 import FrmDetallesCotizacion from './components/FrmDetallesCotizacion'
 import { getDetalles, getTotales } from './constants/reglasNegocio'
+import { useNotas } from '../Notas/hooks/NotasContext'
 
 let initDetails = {
   suaje: {
@@ -49,6 +50,7 @@ const CotizarPage = () => {
 
   const { allMateriales } = useMaterial()
   const { allSuajes } = useSuaje()
+  const { allNotas } = useNotas()
 
   const [ready, setReady] = useState(false)
   const [detailsCalculated, setDetailsCalculated] = useState(false)
@@ -132,6 +134,11 @@ const CotizarPage = () => {
         ? initDetails.suaje
         : initDetails.guillotina
     )
+    frm.setFieldValue('calculo',
+      frm.values.corte === "Suaje" ?
+        { label: 'Regla de tres', value: 'reglaTres' } :
+        { label: 'Mínimos', value: 'minimos' }
+    )
   }, [frm?.values.corte])
 
   useEffect(() => {
@@ -145,6 +152,24 @@ const CotizarPage = () => {
     frm?.values.ancho,
     frm?.values.alto
   ])
+
+  useEffect(() => {
+    if (frm?.values.material) {
+      if ((frm?.values?.corte === 'Guillotina' && frm?.values?.ancho && frm?.values?.alto) ||
+        (frm?.values?.corte === 'Suaje' && frm?.values?.suaje) ||
+        (frm?.values?.corte === 'Notas' && frm?.values?.nota)) {
+        calculateArrangement()
+      }
+    }
+  }, [
+    frm?.values?.corte,
+    frm?.values.material,
+    frm?.values.suaje,
+    frm?.values.ancho,
+    frm?.values.alto,
+    frm?.values.nota,
+  ])
+
   /* Llamamos a la funcion calculateArrangement cada vez que cambia
   alguno de los siguientes valores: material, suaje, medidas para guillotina, 
   fraccion y margenes */
@@ -155,10 +180,7 @@ const CotizarPage = () => {
     frm.setFieldValue('tipoImpresion', null)
     setSelectedTab(0)
   }, [
-    frm?.values.material,
-    frm?.values.suaje,
-    frm?.values.ancho,
-    frm?.values.alto,
+
     frm?.values.fraccion,
     frm?.values.margin,
     frm?.values.margin_top,
@@ -215,11 +237,6 @@ const CotizarPage = () => {
       realHeight -= frm.values.margin * 2
     }
 
-    console.log(frm.values.margin_left)
-
-    console.log('realWidth: ', realWidth)
-    console.log('realHeight: ', realHeight)
-
     // Obteniendo las medidas reales de la pieza
     if (frm?.values.corte === 'Suaje') {
       if (!frm?.values.suaje) return piece
@@ -230,12 +247,20 @@ const CotizarPage = () => {
         cortes: numeroCortes,
       }
     }
-    else {
+    else if (frm?.values.corte === 'Guillotina') {
       let { ancho, alto, numeroCortes } = frm?.values
       piece = {
         width: Math.max(alto, ancho) || 1,
         height: Math.min(alto, ancho) || 1,
         cortes: numeroCortes,
+      }
+    }
+    else if (frm?.values.corte === 'Notas') {
+      let { ancho, alto } = allNotas.find(nota => nota.idNota === frm?.values?.nota?.value)
+      piece = {
+        width: Math.max(alto, ancho) || 1,
+        height: Math.min(alto, ancho) || 1,
+        cortes: 1,
       }
     }
 
@@ -400,16 +425,16 @@ const CotizarPage = () => {
                   />
 
 
-
                   { // Si el material y el tipo de corte estan seleccionados
                     frm?.values.material &&
                     ((frm?.values.corte === 'Guillotina' && frm?.values.ancho && frm?.values.alto) ||
-                      (frm?.values.corte === 'Suaje' && frm.values.suaje)) &&
+                      (frm?.values.corte === 'Suaje' && frm.values.suaje) ||
+                      (frm?.values.corte === 'Notas' && frm.values.nota)) &&
 
                     <>
 
                       {/* Seleccion de detalles de pliegos */}
-                      <div className='w-full col-span-2 bg-white rounded-md shadow-md sm:col-span-1' style={{ minHeight: `${whiteWindowRef.current?.clientHeight-12}px` }}>
+                      <div className='w-full col-span-2 bg-white rounded-md shadow-md sm:col-span-1' style={{ minHeight: `${whiteWindowRef.current?.clientHeight - 12}px` }}>
                         <FrmDetallesCotizacion
                           formik={frm}
                           calcularDetalles={calcularDetalles}
@@ -419,7 +444,7 @@ const CotizarPage = () => {
                       </div>
 
                       {/* Vizualizar informacion */}
-                      <div className='flex flex-col w-full col-span-2 bg-white rounded-md shadow-md sm:col-span-1' style={{ minHeight: `${whiteWindowRef.current?.clientHeight-12}px` }}>
+                      <div className='flex flex-col w-full col-span-2 bg-white rounded-md shadow-md sm:col-span-1' style={{ minHeight: `${whiteWindowRef.current?.clientHeight - 12}px` }}>
 
                         <div className='flex pt-2 pl-6 border-b'>
                           {

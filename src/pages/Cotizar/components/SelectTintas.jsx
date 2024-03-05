@@ -2,21 +2,13 @@ import React, { useEffect, useState } from 'react'
 import ForeignInpt from '../../Materiales/components/ForeignInpt'
 import OptsInp from '../../../components/OptsInp'
 import { useAxios } from '../../../context/axiosContext'
+import Th from './Th'
 
 const format = (str) => {
     return ({
         front: Array(Number(str[0])).fill({ value: "" }),
         back: Array(Number(str[str.length - 1])).fill({ value: "" })
     })
-}
-
-const Th = ({ text, className }) => {
-    let styles = `flex items-center justify-center p-2 text-sm text-emerald-800 ${className}`
-    return (
-        <div className={styles}>
-            {text}
-        </div>
-    )
 }
 
 const SelectTintas = ({ formik, value }) => {
