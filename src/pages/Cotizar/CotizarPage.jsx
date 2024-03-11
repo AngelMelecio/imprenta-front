@@ -130,12 +130,12 @@ const CotizarPage = () => {
   para controlar el calculo de detalles e informacion relevante.*/
   useEffect(() => {
     frm.setFieldValue('detalles',
-      frm.values.corte === "Suaje"
+      frm.values.corte === "Etiquetas"
         ? initDetails.suaje
         : initDetails.guillotina
     )
     frm.setFieldValue('calculo',
-      frm.values.corte === "Suaje" ?
+      frm.values.corte === "Etiquetas" ?
         { label: 'Regla de tres', value: 'reglaTres' } :
         { label: 'Mínimos', value: 'minimos' }
     )
@@ -144,7 +144,7 @@ const CotizarPage = () => {
   useEffect(() => {
     setReady(frm.values.material &&
       ((frm.values.corte === 'Guillotina' && frm.values.ancho && frm.values.alto) ||
-        (frm.values.corte === 'Suaje' && frm.values.suaje)))
+        (frm.values.corte === 'Etiquetas' && frm.values.suaje)))
   }, [
     frm?.values.material,
     frm?.values.corte,
@@ -156,7 +156,7 @@ const CotizarPage = () => {
   useEffect(() => {
     if (frm?.values.material) {
       if ((frm?.values?.corte === 'Guillotina' && frm?.values?.ancho && frm?.values?.alto) ||
-        (frm?.values?.corte === 'Suaje' && frm?.values?.suaje) ||
+        (frm?.values?.corte === 'Etiquetas' && frm?.values?.suaje) ||
         (frm?.values?.corte === 'Notas' && frm?.values?.nota)) {
         calculateArrangement()
       }
@@ -238,7 +238,7 @@ const CotizarPage = () => {
     }
 
     // Obteniendo las medidas reales de la pieza
-    if (frm?.values.corte === 'Suaje') {
+    if (frm?.values.corte === 'Etiquetas') {
       if (!frm?.values.suaje) return piece
       let { ancho, alto, numeroCortes } = allSuajes.find(s => s.idSuaje === frm?.values.suaje.value)
       piece = {
@@ -343,7 +343,7 @@ const CotizarPage = () => {
       m => m.idMaterial === frm?.values?.material?.value
     )
 
-    let suaje = frm?.values?.corte === 'Suaje' ?
+    let suaje = frm?.values?.corte === 'Etiquetas' ?
       allSuajes.find(s => s.idSuaje === frm?.values?.suaje?.value)
       : null
 
@@ -373,7 +373,7 @@ const CotizarPage = () => {
       m => m.idMaterial === frm?.values?.material?.value
     )
 
-    let suaje = frm?.values?.corte === 'Suaje' ?
+    let suaje = frm?.values?.corte === 'Etiquetas' ?
       allSuajes.find(s => s.idSuaje === frm?.values?.suaje?.value)
       : null
 
@@ -384,11 +384,13 @@ const CotizarPage = () => {
       totalImpresiones: frm.values?.detalles.totalImpresiones?.value,
       precioMaterial: material?.precio,
       totalEtiquetas: frm.values?.detalles.totalEtiquetas?.value,
+      totalPiezas: frm.values?.detalles.totalPiezas?.value,
       cantidadSuaje: suaje?.cantidad ? suaje?.cantidad : 1,
       precioSuaje: suaje?.precio ? suaje?.precio : 0,
       totalBajadas: frm.values?.detalles.totalBajadas?.value,
       precioGuillotina: frm.values.precioBajadaGuillotina,
-      prensa: frm.values?.prensa,
+      tintas: frm.values?.tintas,
+      terminados: frm.values?.terminados,
     })
 
     frm.setFieldValue('totales', totales)
@@ -428,7 +430,7 @@ const CotizarPage = () => {
                   { // Si el material y el tipo de corte estan seleccionados
                     frm?.values.material &&
                     ((frm?.values.corte === 'Guillotina' && frm?.values.ancho && frm?.values.alto) ||
-                      (frm?.values.corte === 'Suaje' && frm.values.suaje) ||
+                      (frm?.values.corte === 'Etiquetas' && frm.values.suaje) ||
                       (frm?.values.corte === 'Notas' && frm.values.nota)) &&
 
                     <>

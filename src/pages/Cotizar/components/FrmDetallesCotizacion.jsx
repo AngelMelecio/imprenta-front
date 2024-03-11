@@ -18,7 +18,7 @@ const FrmDetallesCotizacion = ({ formik, calcularDetalles, calcularTotales, page
       <div className="flex flex-col flex-wrap w-full px-2 pt-6 sm:px-9">
 
         <h2 className='p-5 text-emerald-900'>Datos generales del corte</h2>
-        
+
         {/* Selector de Fracción de Pliego */}
         <FractionSelect
           formik={formik}
@@ -49,7 +49,9 @@ const FrmDetallesCotizacion = ({ formik, calcularDetalles, calcularTotales, page
             type="number"
           />
         </div>
-        <div className={`flex-grow w-full  px-3`}>
+        {
+          /*
+             <div className={`flex-grow w-full  px-3`}>
           <Opts
             label="Tipo de cálculo"
             name="calculo"
@@ -60,6 +62,9 @@ const FrmDetallesCotizacion = ({ formik, calcularDetalles, calcularTotales, page
             ]}
           />
         </div>
+          */
+        }
+
 
         <div className={`flex-grow w-full px-3`}>
           <Inpt
@@ -69,7 +74,7 @@ const FrmDetallesCotizacion = ({ formik, calcularDetalles, calcularTotales, page
             type="number"
           />
         </div>
-        
+
         { // Boton para calcular detalles y activar el siguiente formulario
           !formik?.values.detalles &&
           <div className="w-full px-3 pb-5">
@@ -79,12 +84,12 @@ const FrmDetallesCotizacion = ({ formik, calcularDetalles, calcularTotales, page
               Calcular Detalles
             </button>
           </div>}
-          
+
       </div>
-      
+
       {formik?.values.detalles &&
-        <div className='w-full px-2 pt-6 sm:px-9' style={{ minHeight: `${pageHeight-12}px` }}>
-          
+        <div className='w-full px-2 pt-6 sm:px-9' style={{ minHeight: `${pageHeight - 12}px` }}>
+
           <FrmTintas
             formik={formik}
           />
@@ -92,22 +97,13 @@ const FrmDetallesCotizacion = ({ formik, calcularDetalles, calcularTotales, page
           <FrmTerminados
             formik={formik}
           />
-          {/*
-
-            <TintaSelect
-              formik={formik}
-            />
-
-
-           */}
-          
 
           {
             formik?.values.prensa &&
             <div className="w-full px-3">
               <button
                 type="button"
-                onClick={ calcularTotales }
+                onClick={calcularTotales}
                 className='w-full h-10 btn-emerald'>
                 Calcular Costo
               </button>
