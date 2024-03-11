@@ -33,7 +33,7 @@ const SelectTintas = ({ formik, value }) => {
         try {
             const res = await myAxios.get(`api/precios_prensa/${idPrensa}`)
             setTiposImpresionOpts(res.data.precios.map(item => ({
-                value: item.tipoImpresion.idTipoImpresion,
+                value: item,
                 label: `${item.tipoImpresion.nombre} - $${item.precio}`
 
             })))

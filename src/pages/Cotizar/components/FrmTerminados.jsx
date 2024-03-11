@@ -13,10 +13,10 @@ const FrmTerminados = ({ formik }) => {
 
     async function fetchTerminados() {
         try {
-            const res = await myAxios.get(`api/terminados/${formik.values.corte}`)
+            const res = await myAxios.get(`api/terminados/trabajo/${(formik.values.corte==='Guillotina'?'Etiquetas':formik.values.corte)}`)
             setAllTerminados(res.data)
             setTerminadosOpts(res.data.map(item => ({
-                value: item.idTerminado,
+                value: item,
                 label: `${item.nombre} - $${item.precio}`
             })))
         } catch (e) {

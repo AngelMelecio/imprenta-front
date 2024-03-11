@@ -59,6 +59,7 @@ const DetailTerminado = () => {
         try {
             setLoading(true)
             const terminado = await getTerminado(id)
+            console.log('terminado -> ', terminado)
             frm.setValues(terminado)
         } catch (e) {
             notify('!No fue posible cargar el terminado¡', true)

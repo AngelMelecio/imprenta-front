@@ -87,7 +87,7 @@ const FrmTipoCotizacion = ({ formik }) => {
   /* Trae los datos de suajes y materiales */
   useEffect(() => {
 
-    if (formik.values.corte === 'Suaje')
+    if (formik.values.corte === 'Etiquetas')
       fetchSuajes()
     if (formik.values.corte === 'Notas')
       fetchNotas()
@@ -110,14 +110,14 @@ const FrmTipoCotizacion = ({ formik }) => {
           name="corte"
           formik={formik}
           options={[
-            { label: 'Etiquetas', value: 'Suaje' },
+            { label: 'Etiquetas', value: 'Etiquetas' },
             { label: 'Notas', value: 'Notas' },
             { label: 'Guillotina', value: 'Guillotina' },
           ]} />
       </div>
 
       {/* Suaje Selected */
-        formik?.values.corte === 'Suaje' && <>
+        formik?.values.corte === 'Etiquetas' && <>
           <div className='flex-grow w-full px-2 sm:w-2/3'>
             <OptsInp
               formik={formik}

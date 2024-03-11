@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 
 const getDetalles = ({
     // Guillotina o Suaje
@@ -60,7 +61,7 @@ const getDetalles = ({
         totalPliegos,
         totalImpresiones,
     }
-    if (tipo === 'Suaje') {
+    if (tipo === 'Etiquetas') {
         ret = {
             ...ret,
             etiquetasImpresion,
@@ -87,13 +88,23 @@ const getTotales = ({
     precioMaterial,
 
     totalEtiquetas,
+    totalPiezas,
     cantidadSuaje,
     precioSuaje,
 
     totalBajadas,
     precioGuillotina,
-    prensa
+    
+    tintas,
+    terminados
 }) => {
+    console.log('tipo -> ', tipo)
+    console.log('tintas -> ', tintas)
+    console.log('terminados -> ', terminados)
+    console.log('totalEtiquetas -> ', totalEtiquetas)
+
+    if (tipo === 'Guillotina') totalEtiquetas = totalPiezas
+    
 
     let totalMaterial = {
         label: 'Total material',
@@ -114,18 +125,29 @@ const getTotales = ({
 
     let totalTintas = {
         label: 'Costo por tintas',
-        value: Math.ceil(totalImpresiones / Number(prensa.value.cantidad)) *
-            
-        (Number(prensa.value.precioCantidad) + Number(prensa.value.precioColor))
+        value:
+            Number(tintas.front.reduce((acc, curr) => acc + ((totalEtiquetas <= Number(curr.value.cantidad)) ?
+                Number(curr.value.precio) : Number((totalEtiquetas * Number(curr.value.precio)) / Number(curr.value.cantidad))), 0) +
+
+                tintas.back.reduce((acc, curr) => acc + ((totalEtiquetas <= Number(curr.value.cantidad)) ?
+                    Number(curr.value.precio) : Number((totalEtiquetas * Number(curr.value.precio)) / Number(curr.value.cantidad))), 0)).toFixed(2)
     }
 
+    let totalTerminados = {
+        label: 'Total terminados',
+        value: Number(terminados.front.reduce((acc, curr) => acc + ((totalEtiquetas <= Number(curr.value.cantidad)) ?
+            Number(curr.value.precio) : Number((totalEtiquetas * Number(curr.value.precio)) / Number(curr.value.cantidad))), 0) +
 
+            terminados.back.reduce((acc, curr) => acc + ((totalEtiquetas <= Number(curr.value.cantidad)) ?
+                Number(curr.value.precio) : Number((totalEtiquetas * Number(curr.value.precio)) / Number(curr.value.cantidad))), 0)).toFixed(2)
+    }
     let ret = {
         totalMaterial,
         totalGuillotina,
-        totalTintas
+        totalTintas,
+        totalTerminados
     }
-    if (tipo === 'Suaje') {
+    if (tipo === 'Etiquetas') {
         ret = {
             ...ret,
             totalSuaje
@@ -133,7 +155,7 @@ const getTotales = ({
     }
     let total = {
         label: 'Total',
-        value: Object.values(ret).reduce((acc, curr) => acc + curr.value, 0)
+        value: Object.values(ret).reduce((acc, curr) => acc + Number(curr.value), 0).toFixed(2)
     }
     return {
         ...ret,
