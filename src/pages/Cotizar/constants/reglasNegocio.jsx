@@ -56,6 +56,10 @@ const getDetalles = ({
         label: 'Total de bajadas',
         value: (cortesFila + 1 + cortesColumna + 1) * Math.ceil(totalImpresiones.value / alturaGuillotina)
     }
+    let totalTiros = {
+        label: 'Total de tiros',
+        value: (totalEtiquetas.value / piezasSuaje)
+    }
 
     let ret = {
         totalPliegos,
@@ -65,7 +69,8 @@ const getDetalles = ({
         ret = {
             ...ret,
             etiquetasImpresion,
-            totalEtiquetas
+            totalEtiquetas,
+            totalTiros,
         }
     } else {
         ret = {
@@ -94,28 +99,32 @@ const getTotales = ({
 
     totalBajadas,
     precioGuillotina,
-    
+
     tintas,
-    terminados
+    terminados,
+
+    totalTiros,
 }) => {
     console.log('tipo -> ', tipo)
     console.log('tintas -> ', tintas)
     console.log('terminados -> ', terminados)
     console.log('totalEtiquetas -> ', totalEtiquetas)
+    console.log('Total de impresiones', totalImpresiones)
+    console.log('Total tiros', totalTiros)
 
     if (tipo === 'Guillotina') totalEtiquetas = totalPiezas
-    
+
 
     let totalMaterial = {
         label: 'Total material',
         value: totalPliegos * precioMaterial
     }
     let totalSuaje = {
-        label: 'Costo por cantidad (Suaje)',
+        label: 'Costo por tiraje y suaje',
         value: Number(
-            (totalEtiquetas <= cantidadSuaje) ?
+            (totalTiros <= cantidadSuaje) ?
                 precioSuaje :
-                ((totalEtiquetas * precioSuaje) / cantidadSuaje)
+                ((totalTiros * precioSuaje) / cantidadSuaje)
         )
     }
     let totalGuillotina = {
@@ -126,20 +135,20 @@ const getTotales = ({
     let totalTintas = {
         label: 'Costo por tintas',
         value:
-            Number(tintas.front.reduce((acc, curr) => acc + ((totalEtiquetas <= Number(curr.value.cantidad)) ?
-                Number(curr.value.precio) : Number((totalEtiquetas * Number(curr.value.precio)) / Number(curr.value.cantidad))), 0) +
+            Number(tintas.front.reduce((acc, curr) => acc + ((totalImpresiones <= Number(curr.value.cantidad)) ?
+                Number(curr.value.precio) : Number((totalImpresiones * Number(curr.value.precio)) / Number(curr.value.cantidad))), 0) +
 
-                tintas.back.reduce((acc, curr) => acc + ((totalEtiquetas <= Number(curr.value.cantidad)) ?
-                    Number(curr.value.precio) : Number((totalEtiquetas * Number(curr.value.precio)) / Number(curr.value.cantidad))), 0)).toFixed(2)
+                tintas.back.reduce((acc, curr) => acc + ((totalImpresiones <= Number(curr.value.cantidad)) ?
+                    Number(curr.value.precio) : Number((totalImpresiones * Number(curr.value.precio)) / Number(curr.value.cantidad))), 0)).toFixed(2)
     }
 
     let totalTerminados = {
         label: 'Total terminados',
-        value: Number(terminados.front.reduce((acc, curr) => acc + ((totalEtiquetas <= Number(curr.value.cantidad)) ?
-            Number(curr.value.precio) : Number((totalEtiquetas * Number(curr.value.precio)) / Number(curr.value.cantidad))), 0) +
+        value: Number(terminados.front.reduce((acc, curr) => acc + ((totalImpresiones <= Number(curr.value.cantidad)) ?
+            Number(curr.value.precio) : Number((totalImpresiones * Number(curr.value.precio)) / Number(curr.value.cantidad))), 0) +
 
-            terminados.back.reduce((acc, curr) => acc + ((totalEtiquetas <= Number(curr.value.cantidad)) ?
-                Number(curr.value.precio) : Number((totalEtiquetas * Number(curr.value.precio)) / Number(curr.value.cantidad))), 0)).toFixed(2)
+            terminados.back.reduce((acc, curr) => acc + ((totalImpresiones <= Number(curr.value.cantidad)) ?
+                Number(curr.value.precio) : Number((totalImpresiones * Number(curr.value.precio)) / Number(curr.value.cantidad))), 0)).toFixed(2)
     }
     let ret = {
         totalMaterial,

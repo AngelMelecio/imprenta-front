@@ -34,7 +34,7 @@ const DetailUsuario = () => {
         errors.alto = 'Ingresa el alto';
       }
       if (!values.cantidad) {
-        errors.cantidad = 'Ingresa la cantidad';
+        errors.cantidad = 'Ingresa la cantidad de tiros';
       }
       if (!values.precio) {
         errors.precio = 'Ingresa el precio';
@@ -130,7 +130,7 @@ const DetailUsuario = () => {
 
             <div className='flex-grow w-full px-5 mb-6'>
               <h2 className='text-lg font-bold text-emerald-800 '>
-                Defina el precio del suaje por cantidad
+                Defina el precio del suaje por cantidad de tiros
               </h2>
             </div>
 
@@ -138,7 +138,7 @@ const DetailUsuario = () => {
               <Inpt type="number" step={1}
                 name="cantidad"
                 onKeyDown={() => setFieldChanged(true)}
-                formik={userFormik} label="Cantidad (etiquetas)" />
+                formik={userFormik} label="Cantidad (Tiros)" />
             </div>
             
             <div className="flex-grow w-full px-4 sm:w-1/2">
