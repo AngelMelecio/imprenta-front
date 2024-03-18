@@ -1,13 +1,18 @@
 import React, { useEffect } from 'react'
 import ForeignInpt from '../../Materiales/components/ForeignInpt'
 import SelectTintas from './SelectTintas'
+import SelectPlacas from './SelectPlacas'
 
 const FrmTintas = ({ formik }) => {
-    
-    useEffect(()=>{
-        formik.setFieldValue('tintas',{back:[], front:[]})
-    },[formik?.values?.prensa,formik?.values?.tinta])
-    
+
+    useEffect(() => {
+        if(formik?.values?.tinta){
+            let str = formik?.values?.tinta?.label
+            formik.setFieldValue('tintas', { back: [], front: []})
+            formik.setFieldValue('placas', { placasBack: Number(str[str.length - 1]), placasFront: Number(str[0]), precioPlaca: 100 })   
+        }
+    }, [formik?.values?.prensa, formik?.values?.tinta])
+
     return (
         <div className='grid w-full grid-cols-3'>
 
@@ -38,6 +43,14 @@ const FrmTintas = ({ formik }) => {
                 <div className="col-span-3 pb-4">
                     <SelectTintas
                         value={formik?.values?.tinta?.label}
+                        formik={formik}
+                    />
+                </div>
+            }
+            {
+                formik?.values?.prensa && formik?.values?.tinta &&
+                <div className="col-span-3 pb-4">
+                    <SelectPlacas
                         formik={formik}
                     />
                 </div>

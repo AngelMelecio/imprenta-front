@@ -54,7 +54,7 @@ const FrmTerminados = ({ formik }) => {
                             type="text"
                             formik={formik}
                             name={`terminados.front.${i}`}
-                            value={t.label || ""}
+                            value={formik?.values?.terminados?.front[i] && formik.values.terminados.front[i].label}
                             options={terminadosOpts}
                             showErrors={false}
 
@@ -73,7 +73,7 @@ const FrmTerminados = ({ formik }) => {
                             type="text"
                             formik={formik}
                             name={`terminados.back.${i}`}
-                            value={t.label || ""}
+                            value={formik?.values?.terminados?.back[i] && formik.values.terminados.back[i].label}
                             options={terminadosOpts}
                             showErrors={false}
 

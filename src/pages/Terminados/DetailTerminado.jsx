@@ -27,9 +27,8 @@ const DetailTerminado = () => {
                 errors.nombre = 'Ingresa el nombre de la nota';
             }
 
-
-            if (!values.cantidad || values.cantidad === '') {
-                errors.cantidad = 'Ingresa el cantidad';
+            if (!values.distancia || values.distancia === '') {
+                errors.distancia = 'Ingresa la distancia';
             }
 
             if (!values.precio || values.precio === '') {
@@ -107,7 +106,7 @@ const DetailTerminado = () => {
                         <div className="flex-grow w-full px-4 sm:w-1/3">
                             <Inpt
                                 onKeyDown={() => setFieldChanged(true)}
-                                name="cantidad" formik={frm} label="Cantidad (mínima)"
+                                name="distancia" formik={frm} label="Distancia lineal (cm)"
                                 type="number" step={0.1}
                             />
                         </div>

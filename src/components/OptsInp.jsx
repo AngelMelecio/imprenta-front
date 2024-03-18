@@ -33,6 +33,7 @@ const OptsInp = ({
     }, [options])
 
     const handleOptClick = (e, option) => {
+        e.preventDefault() 
         inptRef.current.blur()
         formik?.setFieldValue(name, option)
         fieldChange && fieldChange(true)

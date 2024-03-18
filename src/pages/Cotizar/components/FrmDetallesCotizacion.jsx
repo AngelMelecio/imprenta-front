@@ -49,22 +49,6 @@ const FrmDetallesCotizacion = ({ formik, calcularDetalles, calcularTotales, page
             type="number"
           />
         </div>
-        {
-          /*
-             <div className={`flex-grow w-full  px-3`}>
-          <Opts
-            label="Tipo de cálculo"
-            name="calculo"
-            formik={formik}
-            options={[
-              { label: 'Regla de tres', value: 'reglaTres' },
-              { label: 'Mínimos', value: 'minimos' },
-            ]}
-          />
-        </div>
-          */
-        }
-
 
         <div className={`flex-grow w-full px-3`}>
           <Inpt
@@ -100,7 +84,7 @@ const FrmDetallesCotizacion = ({ formik, calcularDetalles, calcularTotales, page
 
           {
             formik?.values.prensa &&
-            <div className="w-full px-3">
+            <div className="w-full px-3 mt-4">
               <button
                 type="button"
                 onClick={calcularTotales}
