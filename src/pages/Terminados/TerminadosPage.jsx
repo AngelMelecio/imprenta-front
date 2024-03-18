@@ -7,7 +7,7 @@ import { useTerminados } from './hooks/TerminadosContext'
 let COLUMNS = [
   { label: 'ID', atribute: 'idTerminado' },
   { label: 'Nombre', atribute: 'nombre' },
-  { label: 'Cantidad (mínima)', atribute: 'cantidad' },
+  { label: 'Distancia lineal (cm)', atribute: 'distancia' },
   { label: 'Precio $', atribute: 'precio' },
   { label: 'Tipo de trabajo', atribute: 'tipoTrabajo' },
 ]

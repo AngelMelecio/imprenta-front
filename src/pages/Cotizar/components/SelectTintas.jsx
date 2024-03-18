@@ -3,6 +3,7 @@ import ForeignInpt from '../../Materiales/components/ForeignInpt'
 import OptsInp from '../../../components/OptsInp'
 import { useAxios } from '../../../context/axiosContext'
 import Th from './Th'
+import Inpt from '../../../components/Inpt'
 
 const format = (str) => {
     return ({
@@ -48,7 +49,7 @@ const SelectTintas = ({ formik, value }) => {
         <div className='grid grid-cols-2 gap-3 px-3'>
 
             <Th text="Tintas frente" />
-            <Th text="Tintas atrás" />
+            <Th text="Tintas reverso" />
 
             <div className='grid col-span-1 gap-2'>
                 {tintas?.front.map((t, i) => <div key={`OF_${i}`} className='w-full'>
@@ -61,7 +62,6 @@ const SelectTintas = ({ formik, value }) => {
                     />
                 </div>)}
             </div>
-
 
             <div className='grid col-span-1 gap-2'>
                 {tintas?.back.map((t, i) => <div key={`OB_${i}`} className='w-full'>

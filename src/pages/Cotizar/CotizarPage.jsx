@@ -399,6 +399,8 @@ const CotizarPage = () => {
       tintas: frm.values?.tintas,
       terminados: frm.values?.terminados,
       totalTiros: frm.values?.detalles.totalTiros?.value | 0,
+      placas: frm.values?.placas,
+      canvas: canvas,
     })
 
     frm.setFieldValue('totales', totales)

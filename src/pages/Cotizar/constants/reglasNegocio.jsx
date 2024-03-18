@@ -104,21 +104,14 @@ const getTotales = ({
     terminados,
 
     totalTiros,
+    placas,
+    canvas
 }) => {
-    console.log('tipo -> ', tipo)
-    console.log('tintas -> ', tintas)
-    console.log('terminados -> ', terminados)
-    console.log('totalEtiquetas -> ', totalEtiquetas)
-    console.log('Total de impresiones', totalImpresiones)
-    console.log('Total tiros', totalTiros)
-
-    if (tipo === 'Guillotina') totalEtiquetas = totalPiezas
-
-
     let totalMaterial = {
-        label: 'Total material',
+        label: 'Costo material',
         value: totalPliegos * precioMaterial
     }
+
     let totalSuaje = {
         label: 'Costo por tiraje y suaje',
         value: Number(
@@ -127,6 +120,7 @@ const getTotales = ({
                 ((totalTiros * precioSuaje) / cantidadSuaje)
         )
     }
+
     let totalGuillotina = {
         label: 'Costo de guillotina (bajadas)',
         value: totalBajadas * precioGuillotina
@@ -143,29 +137,40 @@ const getTotales = ({
     }
 
     let totalTerminados = {
-        label: 'Total terminados',
-        value: Number(terminados.front.reduce((acc, curr) => acc + ((totalImpresiones <= Number(curr.value.cantidad)) ?
-            Number(curr.value.precio) : Number((totalImpresiones * Number(curr.value.precio)) / Number(curr.value.cantidad))), 0) +
-
-            terminados.back.reduce((acc, curr) => acc + ((totalImpresiones <= Number(curr.value.cantidad)) ?
-                Number(curr.value.precio) : Number((totalImpresiones * Number(curr.value.precio)) / Number(curr.value.cantidad))), 0)).toFixed(2)
+        label: 'Costo terminados',
+        value: Number(
+            terminados.front.reduce((acc, curr) => 
+                acc +(((Number(canvas.height) / Number(curr.value.distancia))) * ((Number(canvas.width) / Number(curr.value.distancia))) * totalImpresiones * Number(curr.value.precio)), 0) +
+            terminados.back.reduce((acc, curr) => 
+                acc +(((Number(canvas.height) / Number(curr.value.distancia))) * ((Number(canvas.width) / Number(curr.value.distancia))) * totalImpresiones * Number(curr.value.precio)), 0)
+        )
     }
+    
+    let totalPlacas = {
+        label: 'Costo de placas',
+        value: Number((placas.placasFront + placas.placasBack) * placas.precioPlaca)
+    }
+
     let ret = {
         totalMaterial,
         totalGuillotina,
         totalTintas,
-        totalTerminados
+        totalTerminados,
+        totalPlacas
     }
+
     if (tipo === 'Etiquetas') {
         ret = {
             ...ret,
             totalSuaje
         }
     }
+
     let total = {
         label: 'Total',
         value: Object.values(ret).reduce((acc, curr) => acc + Number(curr.value), 0).toFixed(2)
     }
+    
     return {
         ...ret,
         total
