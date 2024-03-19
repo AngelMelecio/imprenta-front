@@ -13,6 +13,7 @@ const SelectPlacas = ({ formik }) => {
             <div className='grid col-span-1 gap-2'>
                 <Inpt
                     name={'placas.placasFront'} formik={formik} label="Placas"
+                    withoutCero={false}
                     value={formik?.values?.placas?.placasFront}
                     type="number"
                 />
@@ -20,6 +21,7 @@ const SelectPlacas = ({ formik }) => {
             <div className='grid col-span-1 gap-2'>
                 <Inpt
                     name={'placas.placasBack'} formik={formik} label="Placas"
+                    withoutCero={false}
                     value={formik?.values?.placas?.placasBack}
                     type="number" 
                 />
