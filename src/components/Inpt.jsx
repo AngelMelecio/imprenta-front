@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { MyIcons } from '../constants/Icons'
 
-const Inpt = ({ label, name, formik, value = null, showErrors = true, format, ...props }) => {
+const Inpt = ({ label, name, formik, value = null, showErrors = true, format, withoutCero = true, ...props }) => {
 
     const [isFocus, setIsFocus] = useState(false)
     const [hasValue, setHasValue] = useState(false)
@@ -10,8 +10,8 @@ const Inpt = ({ label, name, formik, value = null, showErrors = true, format, ..
     useEffect(() => {
 
         setError(formik?.errors[name] && formik?.touched[name])
-        setHasValue((value!==null || formik?.values[name] !==null)? true : false)
-        
+        setHasValue((value !== null || formik?.values[name] !== null) ? true : false)
+
     }, [formik.values, formik.errors, formik.touched])
 
     const handleFocus = (e) => {
@@ -40,7 +40,7 @@ const Inpt = ({ label, name, formik, value = null, showErrors = true, format, ..
                     name={name}
                     onFocus={handleFocus}
                     onChange={formik?.handleChange}
-                    value={value || formik?.values[name] || (props.type === 'number' ? 0 : '')}
+                    value={value || formik?.values[name] || (props.type === 'number' ? (withoutCero ? '' : 0) : '')}
                     onBlur={handleBlur}
                     className={`w-full px-4 py-2 text-base text-gray-700 border rounded-lg outline-none  duration-200 font-medium 
                     ${error ? 'border-rose-400' : isFocus ? 'border-emerald-500' : !props.readOnly ? 'hover:border-emerald-500' : ''} 
