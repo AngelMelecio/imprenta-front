@@ -110,9 +110,10 @@ const FrmTipoCotizacion = ({ formik }) => {
           name="corte"
           formik={formik}
           options={[
-            { label: 'Etiquetas', value: 'Etiquetas' },
-            { label: 'Notas', value: 'Notas' },
-            { label: 'Guillotina', value: 'Guillotina' },
+            { value: 'Etiquetas', label: 'Etiquetas (Suaje)'},
+            { value: 'Guillotina', label: 'Etiquetas (Guillotina)'},
+            { value: 'Notas', label: 'Notas'},
+            
           ]} />
       </div>
 

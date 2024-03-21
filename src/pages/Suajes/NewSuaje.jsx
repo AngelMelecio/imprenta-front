@@ -92,20 +92,18 @@ const NewSuaje = () => {
             <div className="flex-grow w-full px-4 sm:w-1/2">
               <Inpt type="number" name="numeroCortes" formik={userFormik} label="Número de cortes (etiquetas)" />
             </div>
-
-            <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Inpt
-                name="alto" formik={userFormik} label="Alto (cm)"
-                type="number" step={0.1}
-              />
-            </div>
             <div className="flex-grow w-full px-4 sm:w-1/2">
               <Inpt
                 name="ancho" formik={userFormik} label="Ancho (cm)"
                 type="number" step={0.1}
               />
             </div>
-            
+            <div className="flex-grow w-full px-4 sm:w-1/2">
+              <Inpt
+                name="alto" formik={userFormik} label="Alto (cm)"
+                type="number" step={0.1}
+              />
+            </div>
             <div className='flex-grow w-full px-5 mb-6'>
               <h2 className='text-lg font-bold text-emerald-800 '>
                 Defina el precio del suaje por cantidad de tiros

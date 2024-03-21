@@ -1,18 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Opts from '../../components/Opts'
-import Inpt from '../../components/Inpt'
+
 import { useFormik } from 'formik'
 import { useMaterial } from '../Materiales/hooks/MaterialContext'
 import AbsScroll from '../../components/AbsScroll'
 import { useSuaje } from '../Suajes/hooks/SuajeContext'
 import Visualizer from './components/Visualizer'
-import OptsInp from '../../components/OptsInp'
 import Modal from '../../components/Modal'
-import Summary from './components/Summary'
-import FractionSelect from './components/FractionSelect'
-import MarginSelect from './components/MarginSelect'
 import DetailRow from './components/DetailRow'
-import TintaSelect from './components/TintaSelect'
 import FrmTipoCotizacion from './components/FrmTipoCotizacion'
 import FrmDetallesCotizacion from './components/FrmDetallesCotizacion'
 import { getDetalles, getTotales } from './constants/reglasNegocio'
@@ -91,12 +85,6 @@ const CotizarPage = () => {
       errors.precioBajadaGuillotina = 'Ingresa un precio mayor a 0';
     }
 
-    if (!values.precioTiraje){
-      errors.precioTiraje = 'Ingresa el precio por tiraje'
-    }else if (values.precioTiraje <= 0) {
-      errors.precioTiraje = 'Ingresa un precio mayor a 0';
-    }
-
     return errors
   }
 
@@ -114,7 +102,6 @@ const CotizarPage = () => {
       margin_right: 1.5,
       detailedMargin: false,
       precioBajadaGuillotina: 2,
-      precioTiraje: 250,
     },
     validate,
     onSubmit: async (values) => {
