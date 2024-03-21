@@ -113,19 +113,18 @@ const DetailUsuario = () => {
                 formik={userFormik} label="Número de cortes (etiquetas)" />
             </div>
 
+            <div className="flex-grow w-full px-4 sm:w-1/2">
+              <Inpt type="number" step={0.1}
+                name="ancho"
+                onKeyDown={() => setFieldChanged(true)}
+                formik={userFormik} label="Ancho (cm)" />
+            </div>
 
             <div className="flex-grow w-full px-4 sm:w-1/2">
               <Inpt type="number" step={0.1}
                 name="alto"
                 onKeyDown={() => setFieldChanged(true)}
                 formik={userFormik} label="Alto (cm)" />
-            </div>
-            
-            <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Inpt type="number" step={0.1}
-                name="ancho"
-                onKeyDown={() => setFieldChanged(true)}
-                formik={userFormik} label="Ancho (cm)" />
             </div>
 
             <div className='flex-grow w-full px-5 mb-6'>

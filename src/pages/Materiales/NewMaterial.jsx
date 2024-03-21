@@ -44,6 +44,8 @@ const NewMateriales = () => {
       }
       if (!values.alturaGuillotina) {
         errors.alturaGuillotina = 'Ingresa la altura máxima para guillotina';
+      } else if (values.alturaGuillotina <= 0){
+        errors.alturaGuillotina = 'La altura debe ser un entero mayor a cero'
       }
 
       //console.log('validating:')
@@ -118,10 +120,20 @@ const NewMateriales = () => {
             </div>
 
             <div className="flex-grow w-full px-4 sm:w-1/2">
+              <Inpt type="number" step={0.1} name="ancho" formik={materialFormik} label="Ancho (cm)" />
+            </div>
+            
+            <div className="flex-grow w-full px-4 sm:w-1/2">
               <Inpt type="number" step={0.1} name="alto" formik={materialFormik} label="Alto (cm)" />
             </div>
-            <div className="flex-grow w-full px-4 sm:w-1/2">
-              <Inpt type="number" step={0.1} name="ancho" formik={materialFormik} label="Ancho (cm)" />
+            <div className="flex-grow w-full px-4 sm:w-1/3">
+              <Inpt name="grosor" formik={materialFormik} label="Grosor" />
+            </div>
+            <div className="flex-grow w-full px-4 sm:w-1/3">
+              <Inpt name="color" formik={materialFormik} label="Color" />
+            </div>
+            <div className="flex-grow w-full px-4 sm:w-1/3">
+              <Inpt type="number" step={0.01} name="gramaje" formik={materialFormik} label="Gramaje" />
             </div>
 
             <div className="flex-grow w-full px-4 sm:w-2/3">
@@ -130,16 +142,6 @@ const NewMateriales = () => {
 
             <div className="flex-grow w-full px-4 sm:w-1/3">
               <Inpt type="number" name="stock" formik={materialFormik} label="Stock" />
-            </div>
-
-            <div className="flex-grow w-full px-4 sm:w-1/3">
-              <Inpt type="number" step={0.01} name="gramaje" formik={materialFormik} label="Gramaje" />
-            </div>
-            <div className="flex-grow w-full px-4 sm:w-1/3">
-              <Inpt name="grosor" formik={materialFormik} label="Grosor" />
-            </div>
-            <div className="flex-grow w-full px-4 sm:w-1/3">
-              <Inpt name="color" formik={materialFormik} label="Color" />
             </div>
 
             <div className="flex-grow w-full px-4 sm:w-1/2">

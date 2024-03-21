@@ -46,6 +46,8 @@ const DetailUsuario = () => {
 
       if (!values.alturaGuillotina) {
         errors.alturaGuillotina = 'Ingresa la altura máxima para guillotina';
+      } else if (values.alturaGuillotina <= 0){
+        errors.alturaGuillotina = 'La altura debe ser un entero mayor a cero'
       }
 
       return errors
